@@ -21,7 +21,12 @@ class HomeScreenState extends State<HomeScreen> {
       null,
       DateTime.now().millisecondsSinceEpoch,
     );
-    debugPrint('Insert success: $success');
+    debugPrint('Insert state: $success');
+  }
+
+  _deleteTodoById(int id) async {
+    int success = await _database.deleteTodoById(id);
+    debugPrint('Delete state: $success');
   }
 
   @override
@@ -30,7 +35,14 @@ class HomeScreenState extends State<HomeScreen> {
     _database.getAllTodos().watch().listen((event) {
       debugPrint('Get all todos: ${event.length}');
       setState(() {
-        _todoItems = event.map((todo) => TodoItem(todo: todo)).toList();
+        _todoItems = event
+            .map(
+              (todo) => TodoItem(
+                todo: todo,
+                deleteTodo: (id) => _deleteTodoById(id),
+              ),
+            )
+            .toList();
       });
     });
   }

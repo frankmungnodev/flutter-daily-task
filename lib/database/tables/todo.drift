@@ -10,3 +10,4 @@ CREATE TABLE todos(
 
 insertTodo: INSERT INTO todos (title, body, category, created_at) VALUES (?, ?, ?, ?);
 getAllTodos: SELECT * FROM todos ORDER BY created_at DESC;
+deleteTodoById: DELETE FROM todos WHERE id = ?;

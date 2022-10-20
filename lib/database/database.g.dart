@@ -487,6 +487,15 @@ abstract class _$MDatabase extends GeneratedDatabase {
         }).asyncMap(todos.mapFromRow);
   }
 
+  Future<int> deleteTodoById(int var1) {
+    return customUpdate(
+      'DELETE FROM todos WHERE id = ?1',
+      variables: [Variable<int>(var1)],
+      updates: {todos},
+      updateKind: UpdateKind.delete,
+    );
+  }
+
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
