@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/screens/screen_app.dart';
+import 'package:todo_list/screens/app_screen.dart';
 
 void main() {
   runApp(const App());
@@ -13,7 +13,7 @@ class App extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Todo List',
-      home: ScreenApp(),
+      home: AppScreen(),
     );
   }
 }
