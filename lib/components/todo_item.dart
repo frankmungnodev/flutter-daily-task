@@ -69,18 +69,9 @@ class TodoMinimizeState extends State<TodoMinimize> {
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                '${widget.todo.id}. ',
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-              Text(
-                widget.todo.title,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ],
+          child: Text(
+            widget.todo.title,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
         Container(

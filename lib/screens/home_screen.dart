@@ -29,9 +29,7 @@ class HomeScreenState extends State<HomeScreen> {
     debugPrint('Delete state: $success');
   }
 
-  @override
-  void initState() {
-    super.initState();
+  _getAllTodos() async {
     _database.getAllTodos().watch().listen((event) {
       debugPrint('Get all todos: ${event.length}');
       setState(() {
@@ -45,6 +43,12 @@ class HomeScreenState extends State<HomeScreen> {
             .toList();
       });
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getAllTodos();
   }
 
   @override
