@@ -466,6 +466,19 @@ abstract class _$MDatabase extends GeneratedDatabase {
   _$MDatabase(QueryExecutor e) : super(e);
   late final Categories categories = Categories(this);
   late final Todos todos = Todos(this);
+  Future<int> insertTodo(String var1, String? var2, int? var3, int var4) {
+    return customInsert(
+      'INSERT INTO todos (title, body, category, created_at) VALUES (?1, ?2, ?3, ?4)',
+      variables: [
+        Variable<String>(var1),
+        Variable<String>(var2),
+        Variable<int>(var3),
+        Variable<int>(var4)
+      ],
+      updates: {todos},
+    );
+  }
+
   Selectable<Todo> getAllTodos() {
     return customSelect('SELECT * FROM todos ORDER BY created_at DESC',
         variables: [],
