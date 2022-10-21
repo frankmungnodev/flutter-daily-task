@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_list/controllers/todo_controller.dart';
 import 'package:todo_list/database/database.dart';
-import 'package:todo_list/ui/screens/todo_screen.dart';
+import 'package:todo_list/ui/routing.dart';
 
 class TodoItem extends StatelessWidget {
   final Todo todo;
-  final void Function(int id) deleteTodo;
 
   TodoItem({
     Key? key,
     required this.todo,
-    required this.deleteTodo,
   }) : super(key: key);
 
   final TodoController controller = Get.find();
@@ -119,10 +117,9 @@ class TodoExpanded extends StatelessWidget {
                         child: const Text('Mark as Done'),
                       ),
                       TextButton(
-                        onPressed: () => Get.to(
-                          TodoScreen(
-                            id: todo.id,
-                          ),
+                        onPressed: () => Get.toNamed(
+                          MRouting.todoEdit,
+                          arguments: todo.id,
                         ),
                         child: const Text('Edit'),
                       ),
@@ -132,9 +129,7 @@ class TodoExpanded extends StatelessWidget {
                             title: 'Delete',
                             middleText: 'Confirm to delete this ${todo.title}?',
                             cancel: TextButton(
-                              onPressed: () {
-                                Get.back();
-                              },
+                              onPressed: () => Get.back(),
                               child: const Text('Cancel'),
                             ),
                             confirm: TextButton(

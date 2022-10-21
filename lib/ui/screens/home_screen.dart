@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_list/controllers/todo_controller.dart';
 import 'package:todo_list/ui/components/todo_item.dart';
-import 'package:todo_list/ui/screens/todo_screen.dart';
+import 'package:todo_list/ui/routing.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -30,7 +30,6 @@ class HomeScreen extends StatelessWidget {
                   ...controller.todosItem.map(
                     (todo) => TodoItem(
                       todo: todo,
-                      deleteTodo: controller.deleteTodo,
                     ),
                   ),
                 ],
@@ -38,7 +37,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (() => Get.to(TodoScreen())),
+        onPressed: (() => Get.toNamed(MRouting.todoEdit)),
         child: const Icon(CupertinoIcons.add),
       ),
     );

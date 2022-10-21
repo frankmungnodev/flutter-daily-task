@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/ui/screens/app_screen.dart';
+import 'package:todo_list/ui/routing.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -15,7 +15,8 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Todo List',
       theme: ThemeData(brightness: Brightness.dark),
-      home: const AppScreen(),
+      initialRoute: MRouting.app,
+      getPages: MRouting.pages,
     );
   }
 }

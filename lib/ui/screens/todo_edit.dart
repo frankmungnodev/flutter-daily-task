@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_list/controllers/todo_screen_controller.dart';
 
-class TodoScreen extends StatelessWidget {
-  final int? id;
-  TodoScreen({Key? key, this.id}) : super(key: key);
+class TodoEditScreen extends StatelessWidget {
+  TodoEditScreen({Key? key}) : super(key: key);
 
+  final id = Get.arguments;
   final controller = Get.put(TodoScreenController());
 
   @override
