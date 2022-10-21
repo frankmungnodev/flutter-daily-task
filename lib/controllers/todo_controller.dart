@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_list/database/database.dart';
 
-class HomeController extends GetxController {
+class TodoController extends GetxController {
   final MDatabase _database = Get.put(MDatabase());
 
   var expandedTodos = <int>[].obs;

@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_list/controllers/home_controller.dart';
+import 'package:todo_list/controllers/todo_controller.dart';
 import 'package:todo_list/ui/components/todo_item.dart';
+import 'package:todo_list/ui/screens/todo_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
-  final controller = Get.put(HomeController());
+  final controller = Get.put(TodoController());
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (() => controller.insertTodo()),
+        onPressed: (() => Get.to(const TodoScreen())),
         child: const Icon(CupertinoIcons.add),
       ),
     );

@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_list/controllers/home_controller.dart';
+import 'package:todo_list/controllers/todo_controller.dart';
 import 'package:todo_list/database/database.dart';
+import 'package:todo_list/ui/screens/todo_screen.dart';
 
 class TodoItem extends StatelessWidget {
   final Todo todo;
@@ -14,14 +15,14 @@ class TodoItem extends StatelessWidget {
     required this.deleteTodo,
   }) : super(key: key);
 
-  final HomeController homeController = Get.find();
+  final TodoController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: InkWell(
-        onTap: () => homeController.toggleExpand(todo.id),
+        onTap: () => controller.toggleExpand(todo.id),
         child: Column(
           children: [
             TodoCollapsed(
@@ -47,7 +48,7 @@ class TodoCollapsed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeController controller = Get.find();
+    TodoController controller = Get.find();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,7 +91,7 @@ class TodoExpanded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeController controller = Get.find();
+    TodoController controller = Get.find();
 
     return Obx(
       (() => (controller.expandedTodos).contains(todo.id)
@@ -116,6 +117,14 @@ class TodoExpanded extends StatelessWidget {
                       TextButton(
                         onPressed: () => {},
                         child: const Text('Mark as Done'),
+                      ),
+                      TextButton(
+                        onPressed: () => Get.to(
+                          TodoScreen(
+                            id: todo.id,
+                          ),
+                        ),
+                        child: const Text('Edit'),
                       ),
                       TextButton(
                         onPressed: () => {
