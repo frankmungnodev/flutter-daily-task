@@ -105,7 +105,8 @@ class TodoExpanded extends StatelessWidget {
               children: [
                 Container(
                   width: double.maxFinite,
-                  padding: const EdgeInsets.all(16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Text(
                     todo.body ?? '',
                     style: Theme.of(context).textTheme.bodyMedium,

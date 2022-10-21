@@ -10,11 +10,11 @@ class DBController extends GetxController {
     return _database.getAllTodos().watch();
   }
 
-  insertTodo() async {
+  insertTodo(String title, String? body, int category) async {
     int success = await _database.insertTodo(
-      "Todo",
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      null,
+      title,
+      body,
+      category,
       DateTime.now().millisecondsSinceEpoch,
     );
     debugPrint('Insert state: $success');
