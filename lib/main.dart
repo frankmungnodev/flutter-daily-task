@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/screens/app_screen.dart';
+import 'package:todo_list/ui/screens/app_screen.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const App());
@@ -10,7 +11,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Todo List',
       theme: ThemeData(brightness: Brightness.dark),

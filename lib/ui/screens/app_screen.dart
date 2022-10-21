@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/components/bottom_nav.dart';
-import 'package:todo_list/screens/home_screen.dart';
-import 'package:todo_list/screens/settings_screen.dart';
-import 'package:todo_list/screens/statics_screen.dart';
+import 'package:todo_list/ui/components/bottom_nav.dart';
+import 'package:todo_list/ui/screens/home_screen.dart';
+import 'package:todo_list/ui/screens/settings_screen.dart';
+import 'package:todo_list/ui/screens/statics_screen.dart';
 
 class AppScreen extends StatefulWidget {
   const AppScreen({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class AppScreen extends StatefulWidget {
 }
 
 class AppScreenState extends State<AppScreen> {
-  final List<Widget> _screens = const [
+  final List<Widget> _screens = [
     HomeScreen(),
     StaticsScreen(),
     SettingsScreen(),
