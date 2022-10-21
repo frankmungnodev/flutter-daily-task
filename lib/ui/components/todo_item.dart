@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_list/controllers/todo_controller.dart';
+import 'package:todo_list/controllers/home_screen_controller.dart';
 import 'package:todo_list/database/database.dart';
 import 'package:todo_list/ui/routing.dart';
 
@@ -13,18 +13,23 @@ class TodoItem extends StatelessWidget {
     required this.todo,
   }) : super(key: key);
 
-  final TodoController controller = Get.find();
+  final controller = Get.find<HomeScreenController>();
+
+  _toggleExpand() {
+    controller.toggleExpand(todo.id);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: InkWell(
-        onTap: () => controller.toggleExpand(todo.id),
+        onTap: _toggleExpand,
         child: Column(
           children: [
             TodoCollapsed(
               todo: todo,
+              toggleExpand: _toggleExpand,
             ),
             TodoExpanded(
               todo: todo,
@@ -39,15 +44,18 @@ class TodoItem extends StatelessWidget {
 // Minimized State
 class TodoCollapsed extends StatelessWidget {
   final Todo todo;
-  const TodoCollapsed({
+  final void Function() toggleExpand;
+
+  TodoCollapsed({
     Key? key,
     required this.todo,
+    required this.toggleExpand,
   }) : super(key: key);
+
+  final controller = Get.find<HomeScreenController>();
 
   @override
   Widget build(BuildContext context) {
-    TodoController controller = Get.find();
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -63,7 +71,7 @@ class TodoCollapsed extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: IconButton(
-            onPressed: () => controller.toggleExpand(todo.id),
+            onPressed: () => toggleExpand(),
             icon: Obx(
               () => Icon(
                 (controller.expandedTodos).contains(todo.id)
@@ -82,17 +90,17 @@ class TodoCollapsed extends StatelessWidget {
 class TodoExpanded extends StatelessWidget {
   final Todo todo;
 
-  const TodoExpanded({
+  TodoExpanded({
     Key? key,
     required this.todo,
   }) : super(key: key);
 
+  final _homeController = Get.find<HomeScreenController>();
+
   @override
   Widget build(BuildContext context) {
-    TodoController controller = Get.find();
-
     return Obx(
-      (() => (controller.expandedTodos).contains(todo.id)
+      (() => (_homeController.expandedTodos).contains(todo.id)
           ? Column(
               children: [
                 Container(
@@ -113,10 +121,6 @@ class TodoExpanded extends StatelessWidget {
                         child: const Text('Start'),
                       ),
                       TextButton(
-                        onPressed: () => {},
-                        child: const Text('Mark as Done'),
-                      ),
-                      TextButton(
                         onPressed: () => Get.toNamed(
                           MRouting.todoEdit,
                           arguments: todo.id,
@@ -134,7 +138,7 @@ class TodoExpanded extends StatelessWidget {
                             ),
                             confirm: TextButton(
                               onPressed: () {
-                                controller.deleteTodo(todo.id);
+                                _homeController.deleteTodo(todo.id);
                                 Get.back();
                               },
                               child: const Text('Confrim'),

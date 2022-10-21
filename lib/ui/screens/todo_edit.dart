@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_list/controllers/todo_screen_controller.dart';
+import 'package:todo_list/controllers/todo_edit_controller.dart';
 
 class TodoEditScreen extends StatelessWidget {
   TodoEditScreen({Key? key}) : super(key: key);
 
   final id = Get.arguments;
-  final controller = Get.put(TodoScreenController());
+  final controller = Get.put(TodoEditController());
 
   @override
   Widget build(BuildContext context) {

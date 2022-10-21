@@ -1,4 +1,4 @@
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:todo_list/ui/screens/app_screen.dart';
 import 'package:todo_list/ui/screens/home_screen.dart';
 import 'package:todo_list/ui/screens/settings_screen.dart';

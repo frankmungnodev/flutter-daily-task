@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class TodoScreenController extends GetxController {
+class TodoEditController extends GetxController {
   var _title = RxString('');
   get title => _title;
 

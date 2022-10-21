@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_list/controllers/todo_controller.dart';
+import 'package:todo_list/controllers/home_screen_controller.dart';
 import 'package:todo_list/ui/components/todo_item.dart';
 import 'package:todo_list/ui/routing.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 
-  final controller = Get.put(TodoController());
+  final controller = Get.put(HomeScreenController());
 
   @override
   Widget build(BuildContext context) {
