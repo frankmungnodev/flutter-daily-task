@@ -21,6 +21,6 @@ class DBController extends GetxController {
   }
 
   deleteTodo(int id) async {
-    _database.deleteTodoById(id);
+    await _database.deleteTodoById(id);
   }
 }
