@@ -14,8 +14,8 @@ class AppScreen extends StatefulWidget {
 class AppScreenState extends State<AppScreen> {
   final List<Widget> _screens = [
     HomeScreen(),
-    StaticsScreen(),
-    SettingsScreen(),
+    const StaticsScreen(),
+    const SettingsScreen(),
   ];
   int _selectedScreen = 0;
 

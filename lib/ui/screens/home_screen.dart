@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (() => Get.to(const TodoScreen())),
+        onPressed: (() => Get.to(TodoScreen())),
         child: const Icon(CupertinoIcons.add),
       ),
     );
