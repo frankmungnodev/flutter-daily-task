@@ -7,7 +7,7 @@ import 'package:path/path.dart' as p;
 
 part 'database.g.dart';
 
-@DriftDatabase(include: {'tables/category.drift', 'tables/todo.drift'})
+@DriftDatabase(include: {'tables/todo.drift'})
 class MDatabase extends _$MDatabase {
   MDatabase() : super(_openConnection());
 

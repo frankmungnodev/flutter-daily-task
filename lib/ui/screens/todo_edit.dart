@@ -87,14 +87,6 @@ class TodoEditScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      width: double.maxFinite,
-                      margin: const EdgeInsets.only(top: 16),
-                      child: Text(
-                        'Categories:',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
                   ],
                 ),
               )
