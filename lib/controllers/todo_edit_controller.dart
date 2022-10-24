@@ -46,7 +46,7 @@ class TodoEditController extends GetxController {
           titleController.text,
           bodyController.text,
           _priority.value.getInteger,
-          1,
+          "Untitled",
           _todo!.id,
         );
       } else {
@@ -54,7 +54,7 @@ class TodoEditController extends GetxController {
           titleController.text,
           bodyController.text,
           _priority.value.getInteger,
-          0,
+          "Untitled",
         );
       }
       Get.back();

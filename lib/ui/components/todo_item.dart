@@ -89,7 +89,8 @@ class TodoCollapsed extends StatelessWidget {
           onPressed: () => toggleExpand(),
           icon: Obx(
             () => Icon(
-              (controller.expandedTodos).contains(todo.id)
+              (controller.expandedTodo != null &&
+                      controller.expandedTodo == todo.id)
                   ? CupertinoIcons.chevron_up
                   : CupertinoIcons.chevron_down,
             ),
@@ -114,7 +115,8 @@ class TodoExpanded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      (() => (_homeController.expandedTodos).contains(todo.id)
+      (() => (_homeController.expandedTodo != null &&
+              _homeController.expandedTodo == todo.id)
           ? Column(
               children: [
                 todo.body != null && todo.body!.isNotEmpty

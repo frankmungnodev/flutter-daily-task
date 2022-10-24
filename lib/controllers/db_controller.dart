@@ -14,7 +14,7 @@ class DBController extends GetxController {
     return await _database.getTodoById(id).getSingle();
   }
 
-  insertTodo(String title, String? body, int priority, int category) async {
+  insertTodo(String title, String? body, int priority, String category) async {
     int success = await _database.insertTodo(
         title,
         body,
@@ -29,7 +29,7 @@ class DBController extends GetxController {
     String title,
     String? body,
     int priority,
-    int category,
+    String category,
     int id,
   ) async {
     int success = await _database.updateTodoById(

@@ -5,7 +5,7 @@ CREATE TABLE todos(
     title TEXT NOT NULL,
     body TEXT,
     priority INT NOT NULL,
-    category INTEGER REFERENCES categories(id),
+    category TEXT REFERENCES categories(name),
     created_at INTEGER NOT NULL,
     updated_at INTEGER NOT NULL,
 );

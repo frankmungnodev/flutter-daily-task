@@ -66,7 +66,7 @@ class TodoEditScreen extends StatelessWidget {
                       width: double.maxFinite,
                       margin: const EdgeInsets.only(top: 16),
                       child: Text(
-                        'Priorities',
+                        'Priorities:',
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
@@ -86,7 +86,15 @@ class TodoEditScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                    )
+                    ),
+                    Container(
+                      width: double.maxFinite,
+                      margin: const EdgeInsets.only(top: 16),
+                      child: Text(
+                        'Categories:',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
                   ],
                 ),
               )

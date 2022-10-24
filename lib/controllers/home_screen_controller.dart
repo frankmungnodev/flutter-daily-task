@@ -8,7 +8,8 @@ class HomeScreenController extends GetxController {
   final _dbController = Get.put(DBController());
 
   var todosItem = <Todo>[].obs;
-  var expandedTodos = <int>[].obs;
+  final _expandedTodo = RxnInt(null);
+  get expandedTodo => _expandedTodo;
 
   @override
   onInit() {
@@ -17,10 +18,10 @@ class HomeScreenController extends GetxController {
   }
 
   toggleExpand(int id) {
-    if (expandedTodos.contains(id)) {
-      expandedTodos.removeWhere((element) => element == id);
+    if (id == _expandedTodo.value) {
+      _expandedTodo.value = null;
     } else {
-      expandedTodos.add(id);
+      _expandedTodo.value = id;
     }
   }
 

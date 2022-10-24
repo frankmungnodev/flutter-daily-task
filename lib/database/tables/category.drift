@@ -1,4 +1,11 @@
 CREATE TABLE categories(
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL
+    name TEXT NOT NULL PRIMARY KEY,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
 ) AS Category;
+
+insertCategory: INSERT INTO categories (name) VALUES (?);
+getAllCategories: SELECT * FROM categories ORDER BY created_at DESC;
+getCategoryById: SELECT * FROM categories WHERE name = ?;
+udateCategoryById: UPDATE categories SET name = ?, updated_at = ? WHERE name = ?;
+deleteCategoryById: DELETE FROM categories WHERE name = ?;
