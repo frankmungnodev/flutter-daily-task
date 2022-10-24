@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 
-enum Priority { low, normal, high }
+enum Status { pending, ongoing, done }
 
-const priorities = [Priority.high, Priority.normal, Priority.low];
+const status = [Status.done, Status.ongoing, Status.pending];
 
-extension PriorityExtensions on Priority {
+extension StatusExtensions on Status {
   String get displayName {
     switch (this) {
-      case Priority.low:
-        return "Low";
-      case Priority.normal:
-        return "Normal";
-      case Priority.high:
-        return "High";
+      case Status.pending:
+        return "Pending";
+      case Status.ongoing:
+        return "Ongoing";
+      case Status.done:
+        return "Done";
       default:
-        return "Low";
+        return "Pending";
     }
   }
 
   int get getInteger {
     switch (this) {
-      case Priority.low:
+      case Status.pending:
         return 0;
-      case Priority.normal:
+      case Status.ongoing:
         return 1;
-      case Priority.high:
+      case Status.done:
         return 2;
       default:
         return 0;
@@ -33,25 +33,25 @@ extension PriorityExtensions on Priority {
 
   Color get color {
     switch (this) {
-      case Priority.low:
+      case Status.pending:
         return Colors.green;
-      case Priority.normal:
+      case Status.ongoing:
         return Colors.blue;
-      case Priority.high:
+      case Status.done:
         return Colors.red;
     }
   }
 
-  static Priority getPriorityFromInt(int priority) {
+  static Status getPriorityFromInt(int priority) {
     switch (priority) {
       case 0:
-        return Priority.low;
+        return Status.pending;
       case 1:
-        return Priority.normal;
+        return Status.ongoing;
       case 2:
-        return Priority.high;
+        return Status.done;
       default:
-        return Priority.low;
+        return Status.pending;
     }
   }
 

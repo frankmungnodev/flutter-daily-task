@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:todo_list/controllers/todo_edit_controller.dart';
 import 'package:todo_list/ui/components/priority_item.dart';
 
-import '../../utils/priority_enum.dart';
+import '../../utils/status_enum.dart';
 
 class TodoEditScreen extends StatelessWidget {
   TodoEditScreen({Key? key}) : super(key: key);
@@ -76,7 +76,7 @@ class TodoEditScreen extends StatelessWidget {
                         () => Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ...priorities.map(
+                            ...status.map(
                               (priority) => PriorityItem(
                                 priority: priority,
                                 selected: controller.priority == priority,

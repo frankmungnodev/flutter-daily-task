@@ -5,7 +5,7 @@ import 'package:todo_list/controllers/home_screen_controller.dart';
 import 'package:todo_list/database/database.dart';
 import 'package:todo_list/ui/routing.dart';
 
-import '../../utils/priority_enum.dart';
+import '../../utils/status_enum.dart';
 
 class TodoItem extends StatelessWidget {
   final Todo todo;
@@ -35,7 +35,7 @@ class TodoItem extends StatelessWidget {
                 indent: 5,
                 endIndent: 5,
                 thickness: 1,
-                color: PriorityExtensions.getColorFromInt(todo.priority),
+                color: StatusExtensions.getColorFromInt(todo.priority),
               ),
               Expanded(
                 child: Column(

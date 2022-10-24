@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:todo_list/controllers/home_screen_controller.dart';
 import 'package:todo_list/ui/components/todo_item.dart';
 import 'package:todo_list/ui/routing.dart';
-import 'package:todo_list/utils/priority_enum.dart';
+import 'package:todo_list/utils/status_enum.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -38,10 +38,10 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Priorities',
+                          'Status',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        ...priorities.map(
+                        ...status.map(
                           (priority) => Row(
                             children: [
                               Container(

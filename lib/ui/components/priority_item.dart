@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/utils/priority_enum.dart';
+import 'package:todo_list/utils/status_enum.dart';
 
 class PriorityItem extends StatelessWidget {
-  final Priority priority;
+  final Status priority;
   final bool selected;
   final void Function() onClick;
 
