@@ -85,16 +85,13 @@ class TodoCollapsed extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: IconButton(
-            onPressed: () => toggleExpand(),
-            icon: Obx(
-              () => Icon(
-                (controller.expandedTodos).contains(todo.id)
-                    ? CupertinoIcons.chevron_up
-                    : CupertinoIcons.chevron_down,
-              ),
+        IconButton(
+          onPressed: () => toggleExpand(),
+          icon: Obx(
+            () => Icon(
+              (controller.expandedTodos).contains(todo.id)
+                  ? CupertinoIcons.chevron_up
+                  : CupertinoIcons.chevron_down,
             ),
           ),
         )
