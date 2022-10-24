@@ -103,15 +103,17 @@ class TodoExpanded extends StatelessWidget {
       (() => (_homeController.expandedTodos).contains(todo.id)
           ? Column(
               children: [
-                Container(
-                  width: double.maxFinite,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Text(
-                    todo.body ?? '',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
+                todo.body != null && todo.body!.isNotEmpty
+                    ? Container(
+                        width: double.maxFinite,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        child: Text(
+                          todo.body!,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      )
+                    : const Center(),
                 Container(
                   width: double.maxFinite,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -132,7 +134,7 @@ class TodoExpanded extends StatelessWidget {
                         onPressed: () => {
                           Get.defaultDialog(
                             title: 'Delete',
-                            middleText: 'Confirm to delete this ${todo.title}?',
+                            middleText: 'Confirm to delete ${todo.title}?',
                             cancel: TextButton(
                               onPressed: () => Get.back(),
                               child: const Text('Cancel'),

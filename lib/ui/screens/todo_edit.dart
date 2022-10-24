@@ -6,15 +6,13 @@ import 'package:todo_list/controllers/todo_edit_controller.dart';
 class TodoEditScreen extends StatelessWidget {
   TodoEditScreen({Key? key}) : super(key: key);
 
-  final id = Get.arguments;
   final controller = Get.put(TodoEditController());
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('$id');
     return Scaffold(
         appBar: AppBar(
-          title: Text(id == null ? 'New Todo' : 'Edit Todo'),
+          title: Text(controller.id == null ? 'New Todo' : 'Edit Todo'),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => controller.validate(),

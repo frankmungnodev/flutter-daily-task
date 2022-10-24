@@ -5,9 +5,12 @@ CREATE TABLE todos(
     title TEXT NOT NULL,
     body TEXT,
     category INTEGER REFERENCES categories(id),
-    created_at INTEGER NOT NULL
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
 );
 
-insertTodo: INSERT INTO todos (title, body, category, created_at) VALUES (?, ?, ?, ?);
+insertTodo: INSERT INTO todos (title, body, category, created_at, updated_at) VALUES (?, ?, ?, ?, ?);
 getAllTodos: SELECT * FROM todos ORDER BY created_at DESC;
+getTodoById: SELECT * FROM todos WHERE id = ?;
+updateTodoById: UPDATE todos SET title = ?, body = ?, category = ?, updated_at = ? WHERE id = ?;
 deleteTodoById: DELETE FROM todos WHERE id = ?;

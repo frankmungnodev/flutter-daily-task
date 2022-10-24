@@ -182,12 +182,14 @@ class Todo extends DataClass implements Insertable<Todo> {
   final String? body;
   final int? category;
   final int createdAt;
+  final int updatedAt;
   const Todo(
       {required this.id,
       required this.title,
       this.body,
       this.category,
-      required this.createdAt});
+      required this.createdAt,
+      required this.updatedAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -200,6 +202,7 @@ class Todo extends DataClass implements Insertable<Todo> {
       map['category'] = Variable<int>(category);
     }
     map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
     return map;
   }
 
@@ -212,6 +215,7 @@ class Todo extends DataClass implements Insertable<Todo> {
           ? const Value.absent()
           : Value(category),
       createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
     );
   }
 
@@ -224,6 +228,7 @@ class Todo extends DataClass implements Insertable<Todo> {
       body: serializer.fromJson<String?>(json['body']),
       category: serializer.fromJson<int?>(json['category']),
       createdAt: serializer.fromJson<int>(json['created_at']),
+      updatedAt: serializer.fromJson<int>(json['updated_at']),
     );
   }
   @override
@@ -235,6 +240,7 @@ class Todo extends DataClass implements Insertable<Todo> {
       'body': serializer.toJson<String?>(body),
       'category': serializer.toJson<int?>(category),
       'created_at': serializer.toJson<int>(createdAt),
+      'updated_at': serializer.toJson<int>(updatedAt),
     };
   }
 
@@ -243,13 +249,15 @@ class Todo extends DataClass implements Insertable<Todo> {
           String? title,
           Value<String?> body = const Value.absent(),
           Value<int?> category = const Value.absent(),
-          int? createdAt}) =>
+          int? createdAt,
+          int? updatedAt}) =>
       Todo(
         id: id ?? this.id,
         title: title ?? this.title,
         body: body.present ? body.value : this.body,
         category: category.present ? category.value : this.category,
         createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
       );
   @override
   String toString() {
@@ -258,13 +266,15 @@ class Todo extends DataClass implements Insertable<Todo> {
           ..write('title: $title, ')
           ..write('body: $body, ')
           ..write('category: $category, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, title, body, category, createdAt);
+  int get hashCode =>
+      Object.hash(id, title, body, category, createdAt, updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -273,7 +283,8 @@ class Todo extends DataClass implements Insertable<Todo> {
           other.title == this.title &&
           other.body == this.body &&
           other.category == this.category &&
-          other.createdAt == this.createdAt);
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
 }
 
 class TodosCompanion extends UpdateCompanion<Todo> {
@@ -282,12 +293,14 @@ class TodosCompanion extends UpdateCompanion<Todo> {
   final Value<String?> body;
   final Value<int?> category;
   final Value<int> createdAt;
+  final Value<int> updatedAt;
   const TodosCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.body = const Value.absent(),
     this.category = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   });
   TodosCompanion.insert({
     this.id = const Value.absent(),
@@ -295,14 +308,17 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     this.body = const Value.absent(),
     this.category = const Value.absent(),
     required int createdAt,
+    required int updatedAt,
   })  : title = Value(title),
-        createdAt = Value(createdAt);
+        createdAt = Value(createdAt),
+        updatedAt = Value(updatedAt);
   static Insertable<Todo> custom({
     Expression<int>? id,
     Expression<String>? title,
     Expression<String>? body,
     Expression<int>? category,
     Expression<int>? createdAt,
+    Expression<int>? updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -310,6 +326,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
       if (body != null) 'body': body,
       if (category != null) 'category': category,
       if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
     });
   }
 
@@ -318,13 +335,15 @@ class TodosCompanion extends UpdateCompanion<Todo> {
       Value<String>? title,
       Value<String?>? body,
       Value<int?>? category,
-      Value<int>? createdAt}) {
+      Value<int>? createdAt,
+      Value<int>? updatedAt}) {
     return TodosCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       body: body ?? this.body,
       category: category ?? this.category,
       createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -346,6 +365,9 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     if (createdAt.present) {
       map['created_at'] = Variable<int>(createdAt.value);
     }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(updatedAt.value);
+    }
     return map;
   }
 
@@ -356,7 +378,8 @@ class TodosCompanion extends UpdateCompanion<Todo> {
           ..write('title: $title, ')
           ..write('body: $body, ')
           ..write('category: $category, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
@@ -397,8 +420,15 @@ class Todos extends Table with TableInfo<Todos, Todo> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   @override
-  List<GeneratedColumn> get $columns => [id, title, body, category, createdAt];
+  List<GeneratedColumn> get $columns =>
+      [id, title, body, category, createdAt, updatedAt];
   @override
   String get aliasedName => _alias ?? 'todos';
   @override
@@ -431,6 +461,12 @@ class Todos extends Table with TableInfo<Todos, Todo> {
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
     return context;
   }
 
@@ -450,6 +486,8 @@ class Todos extends Table with TableInfo<Todos, Todo> {
           .read(DriftSqlType.int, data['${effectivePrefix}category']),
       createdAt: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
     );
   }
 
@@ -466,14 +504,16 @@ abstract class _$MDatabase extends GeneratedDatabase {
   _$MDatabase(QueryExecutor e) : super(e);
   late final Categories categories = Categories(this);
   late final Todos todos = Todos(this);
-  Future<int> insertTodo(String var1, String? var2, int? var3, int var4) {
+  Future<int> insertTodo(
+      String var1, String? var2, int? var3, int var4, int var5) {
     return customInsert(
-      'INSERT INTO todos (title, body, category, created_at) VALUES (?1, ?2, ?3, ?4)',
+      'INSERT INTO todos (title, body, category, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5)',
       variables: [
         Variable<String>(var1),
         Variable<String>(var2),
         Variable<int>(var3),
-        Variable<int>(var4)
+        Variable<int>(var4),
+        Variable<int>(var5)
       ],
       updates: {todos},
     );
@@ -485,6 +525,30 @@ abstract class _$MDatabase extends GeneratedDatabase {
         readsFrom: {
           todos,
         }).asyncMap(todos.mapFromRow);
+  }
+
+  Selectable<Todo> getTodoById(int var1) {
+    return customSelect('SELECT * FROM todos WHERE id = ?1', variables: [
+      Variable<int>(var1)
+    ], readsFrom: {
+      todos,
+    }).asyncMap(todos.mapFromRow);
+  }
+
+  Future<int> updateTodoById(
+      String var1, String? var2, int? var3, int var4, int var5) {
+    return customUpdate(
+      'UPDATE todos SET title = ?1, body = ?2, category = ?3, updated_at = ?4 WHERE id = ?5',
+      variables: [
+        Variable<String>(var1),
+        Variable<String>(var2),
+        Variable<int>(var3),
+        Variable<int>(var4),
+        Variable<int>(var5)
+      ],
+      updates: {todos},
+      updateKind: UpdateKind.update,
+    );
   }
 
   Future<int> deleteTodoById(int var1) {
