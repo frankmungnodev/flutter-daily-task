@@ -14,20 +14,28 @@ class DBController extends GetxController {
     return await _database.getTodoById(id).getSingle();
   }
 
-  insertTodo(String title, String? body, int category) async {
+  insertTodo(String title, String? body, int priority, int category) async {
     int success = await _database.insertTodo(
         title,
         body,
+        priority,
         category,
         DateTime.now().millisecondsSinceEpoch,
         DateTime.now().millisecondsSinceEpoch);
     debugPrint('Insert todo: $success');
   }
 
-  updateTodo(String title, String? body, int category, int id) async {
+  updateTodo(
+    String title,
+    String? body,
+    int priority,
+    int category,
+    int id,
+  ) async {
     int success = await _database.updateTodoById(
       title,
       body,
+      priority,
       category,
       DateTime.now().millisecondsSinceEpoch,
       id,

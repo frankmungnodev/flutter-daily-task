@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:todo_list/controllers/home_screen_controller.dart';
 import 'package:todo_list/ui/components/todo_item.dart';
 import 'package:todo_list/ui/routing.dart';
+import 'package:todo_list/utils/priority_enum.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -25,6 +26,38 @@ class HomeScreen extends StatelessWidget {
                     child: Text(
                       'Todos',
                       style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: 16,
+                      left: 8,
+                      right: 8,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Priorities',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        ...priorities.map(
+                          (priority) => Row(
+                            children: [
+                              Container(
+                                width: 15,
+                                height: 15,
+                                margin: const EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: priority.color,
+                                ),
+                              ),
+                              Text(priority.displayName),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   ...controller.todosItem.map(

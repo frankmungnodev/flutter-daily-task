@@ -5,6 +5,8 @@ import 'package:todo_list/controllers/home_screen_controller.dart';
 import 'package:todo_list/database/database.dart';
 import 'package:todo_list/ui/routing.dart';
 
+import '../../utils/priority_enum.dart';
+
 class TodoItem extends StatelessWidget {
   final Todo todo;
 
@@ -21,20 +23,35 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: InkWell(
         onTap: _toggleExpand,
-        child: Column(
-          children: [
-            TodoCollapsed(
-              todo: todo,
-              toggleExpand: _toggleExpand,
-            ),
-            TodoExpanded(
-              todo: todo,
-            ),
-          ],
+        child: IntrinsicHeight(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              VerticalDivider(
+                indent: 5,
+                endIndent: 5,
+                thickness: 1,
+                color: PriorityExtensions.getColorFromInt(todo.priority),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    TodoCollapsed(
+                      todo: todo,
+                      toggleExpand: _toggleExpand,
+                    ),
+                    TodoExpanded(
+                      todo: todo,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
