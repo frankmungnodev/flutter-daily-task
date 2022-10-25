@@ -47,7 +47,6 @@ class TodoEditScreen extends StatelessWidget {
               ),
               TextField(
                 controller: controller.bodyController,
-                autofocus: true,
                 maxLines: 5,
                 keyboardType: TextInputType.multiline,
                 decoration: const InputDecoration(

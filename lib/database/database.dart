@@ -5,6 +5,8 @@ import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
+import '../utils/status_enum.dart';
+
 part 'database.g.dart';
 
 @DriftDatabase(include: {'tables/todo.drift'})

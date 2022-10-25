@@ -1,0 +1,6 @@
+targets:
+  $default:
+    builders:
+      drift_dev:
+        options:
+           apply_converters_on_variables: true

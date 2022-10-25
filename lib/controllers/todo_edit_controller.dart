@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:todo_list/controllers/db_controller.dart';
 
 import '../database/database.dart';
-import '../utils/status_enum.dart';
 
 class TodoEditController extends GetxController {
   final _dbController = Get.find<DBController>();
@@ -45,7 +44,6 @@ class TodoEditController extends GetxController {
         _dbController.insertTodo(
           titleController.text,
           bodyController.text,
-          Status.pending.getValue,
         );
       }
       Get.back();

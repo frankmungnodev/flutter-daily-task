@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_list/utils/status_enum.dart';
 
 import '../database/database.dart';
 
@@ -14,26 +15,29 @@ class DBController extends GetxController {
     return await _database.getTodoById(id).getSingle();
   }
 
-  insertTodo(String title, String? body, int priority) async {
+  insertTodo(String title, String? body) async {
+    int currentTime = DateTime.now().millisecondsSinceEpoch;
+
     int success = await _database.insertTodo(
-        title,
-        body,
-        priority,
-        DateTime.now().millisecondsSinceEpoch,
-        DateTime.now().millisecondsSinceEpoch);
+      title,
+      body,
+      Status.pending,
+      currentTime,
+      currentTime,
+    );
     debugPrint('Insert todo: $success');
   }
 
   updateTodo(
     String title,
     String? body,
-    int priority,
+    Status status,
     int id,
   ) async {
     int success = await _database.updateTodoById(
       title,
       body,
-      priority,
+      status,
       DateTime.now().millisecondsSinceEpoch,
       id,
     );
