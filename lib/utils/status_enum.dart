@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-enum Status { pending, ongoing, done }
+enum Status { pending, ongoing, pause, done }
 
-const status = [Status.done, Status.ongoing, Status.pending];
+const status = [Status.done, Status.ongoing, Status.pause, Status.pending];
 
 extension StatusExtensions on Status {
   String get displayName {
     switch (this) {
-      case Status.pending:
-        return "Pending";
       case Status.ongoing:
         return "Ongoing";
+      case Status.pause:
+        return "Pause";
       case Status.done:
         return "Done";
       default:
@@ -18,14 +18,16 @@ extension StatusExtensions on Status {
     }
   }
 
-  int get getInteger {
+  int get getValue {
     switch (this) {
       case Status.pending:
         return 0;
       case Status.ongoing:
         return 1;
-      case Status.done:
+      case Status.pause:
         return 2;
+      case Status.done:
+        return 3;
       default:
         return 0;
     }
@@ -34,37 +36,33 @@ extension StatusExtensions on Status {
   Color get color {
     switch (this) {
       case Status.pending:
-        return Colors.green;
+        return Colors.grey;
       case Status.ongoing:
         return Colors.blue;
-      case Status.done:
+      case Status.pause:
         return Colors.red;
+      case Status.done:
+        return Colors.green;
     }
   }
 
-  static Status getPriorityFromInt(int priority) {
-    switch (priority) {
+  static Status getFromValue(int value) {
+    switch (value) {
       case 0:
         return Status.pending;
       case 1:
         return Status.ongoing;
       case 2:
+        return Status.pause;
+      case 3:
         return Status.done;
       default:
         return Status.pending;
     }
   }
 
-  static Color getColorFromInt(int priority) {
-    switch (priority) {
-      case 0:
-        return Colors.green;
-      case 1:
-        return Colors.blue;
-      case 2:
-        return Colors.red;
-      default:
-        return Colors.green;
-    }
+  static Color getColorFromValue(int value) {
+    var status = getFromValue(value);
+    return status.color;
   }
 }

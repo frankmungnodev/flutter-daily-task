@@ -35,7 +35,7 @@ class TodoItem extends StatelessWidget {
                 indent: 5,
                 endIndent: 5,
                 thickness: 1,
-                color: StatusExtensions.getColorFromInt(todo.priority),
+                color: StatusExtensions.getColorFromValue(todo.priority),
               ),
               Expanded(
                 child: Column(

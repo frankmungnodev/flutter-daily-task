@@ -10,7 +10,7 @@ class TodoEditController extends GetxController {
 
   final titleController = TextEditingController();
   final bodyController = TextEditingController();
-  final _priority = Status.pending.obs;
+  Status _priority = Status.pending;
   get priority => _priority;
 
   final formKey = GlobalKey<FormState>();
@@ -31,12 +31,12 @@ class TodoEditController extends GetxController {
       _todo = todo;
       titleController.text = todo.title;
       bodyController.text = todo.body ?? '';
-      _priority.value = StatusExtensions.getPriorityFromInt(todo.priority);
+      _priority = StatusExtensions.getFromValue(todo.priority);
     });
   }
 
   setPriority(Status priority) {
-    _priority.value = priority;
+    _priority = priority;
   }
 
   validate() {
@@ -45,14 +45,14 @@ class TodoEditController extends GetxController {
         _dbController.updateTodo(
           titleController.text,
           bodyController.text,
-          _priority.value.getInteger,
+          _priority.getValue,
           _todo!.id,
         );
       } else {
         _dbController.insertTodo(
           titleController.text,
           bodyController.text,
-          _priority.value.getInteger,
+          _priority.getValue,
         );
       }
       Get.back();
