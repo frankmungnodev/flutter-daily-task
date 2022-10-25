@@ -46,6 +46,19 @@ extension StatusExtensions on Status {
     }
   }
 
+  String get buttonText {
+    switch (this) {
+      case Status.pending:
+        return "Start";
+      case Status.ongoing:
+        return "Pause";
+      case Status.pause:
+        return "Resume";
+      case Status.done:
+        return "Restart";
+    }
+  }
+
   static Status getFromValue(int value) {
     switch (value) {
       case 0:

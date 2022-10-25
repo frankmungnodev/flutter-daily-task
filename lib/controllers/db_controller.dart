@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_list/utils/status_enum.dart';
@@ -5,10 +6,26 @@ import 'package:todo_list/utils/status_enum.dart';
 import '../database/database.dart';
 
 class DBController extends GetxController {
-  final _database = Get.put(MDatabase());
+  final _database = Get.find<MDatabase>();
+  late final Todos todos;
+  late final Statistics statics;
 
-  Stream<List<Todo>> getAllTodos() {
-    return _database.getAllTodos().watch();
+  @override
+  onInit() {
+    super.onInit();
+    todos = _database.todos;
+    statics = _database.statistics;
+  }
+
+  Stream<List<TypedResult>> getTodoStatics() {
+    return _database.select(todos).join(
+      [
+        leftOuterJoin(
+          statics,
+          todos.id.equalsExp(statics.todoId),
+        ),
+      ],
+    ).watch();
   }
 
   Future<Todo> getTodoById(int id) async {
@@ -22,7 +39,6 @@ class DBController extends GetxController {
       title,
       body,
       minutes,
-      Status.pending,
       currentTime,
       currentTime,
     );
@@ -33,18 +49,21 @@ class DBController extends GetxController {
     String title,
     String? body,
     int minutes,
-    Status status,
     int id,
   ) async {
     int success = await _database.updateTodoById(
       title,
       body,
       minutes,
-      status,
       DateTime.now(),
       id,
     );
     debugPrint('Update todo: $success');
+  }
+
+  updateTodoStatus(Status status, int id) async {
+    // int success = await _database.updateTodoStatus(status, id);
+    // debugPrint('Update todo status: $success');
   }
 
   deleteTodo(int id) async {

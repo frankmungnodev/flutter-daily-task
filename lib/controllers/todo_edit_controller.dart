@@ -40,7 +40,6 @@ class TodoEditController extends GetxController {
           titleController.text,
           bodyController.text,
           int.parse(minutesController.text),
-          _todo!.status,
           _todo!.id,
         );
       } else {

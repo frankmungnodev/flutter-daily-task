@@ -60,9 +60,9 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  ...controller.todosItem.map(
+                  ...controller.todoStatistic.map(
                     (todo) => TodoItem(
-                      todo: todo,
+                      todoStatics: todo,
                     ),
                   ),
                 ],

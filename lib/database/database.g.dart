@@ -7,12 +7,298 @@ part of 'database.dart';
 // **************************************************************************
 
 // ignore_for_file: type=lint
+class Statistic extends DataClass implements Insertable<Statistic> {
+  final int id;
+  final int? todoId;
+  final int progress;
+  final Status status;
+  final DateTime createdAt;
+  const Statistic(
+      {required this.id,
+      this.todoId,
+      required this.progress,
+      required this.status,
+      required this.createdAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || todoId != null) {
+      map['todo_id'] = Variable<int>(todoId);
+    }
+    map['progress'] = Variable<int>(progress);
+    {
+      final converter = Statistics.$converter0;
+      map['status'] = Variable<int>(converter.toSql(status));
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  StatisticsCompanion toCompanion(bool nullToAbsent) {
+    return StatisticsCompanion(
+      id: Value(id),
+      todoId:
+          todoId == null && nullToAbsent ? const Value.absent() : Value(todoId),
+      progress: Value(progress),
+      status: Value(status),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory Statistic.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Statistic(
+      id: serializer.fromJson<int>(json['id']),
+      todoId: serializer.fromJson<int?>(json['todo_id']),
+      progress: serializer.fromJson<int>(json['progress']),
+      status: serializer.fromJson<Status>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['created_at']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'todo_id': serializer.toJson<int?>(todoId),
+      'progress': serializer.toJson<int>(progress),
+      'status': serializer.toJson<Status>(status),
+      'created_at': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  Statistic copyWith(
+          {int? id,
+          Value<int?> todoId = const Value.absent(),
+          int? progress,
+          Status? status,
+          DateTime? createdAt}) =>
+      Statistic(
+        id: id ?? this.id,
+        todoId: todoId.present ? todoId.value : this.todoId,
+        progress: progress ?? this.progress,
+        status: status ?? this.status,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Statistic(')
+          ..write('id: $id, ')
+          ..write('todoId: $todoId, ')
+          ..write('progress: $progress, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, todoId, progress, status, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Statistic &&
+          other.id == this.id &&
+          other.todoId == this.todoId &&
+          other.progress == this.progress &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt);
+}
+
+class StatisticsCompanion extends UpdateCompanion<Statistic> {
+  final Value<int> id;
+  final Value<int?> todoId;
+  final Value<int> progress;
+  final Value<Status> status;
+  final Value<DateTime> createdAt;
+  const StatisticsCompanion({
+    this.id = const Value.absent(),
+    this.todoId = const Value.absent(),
+    this.progress = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  StatisticsCompanion.insert({
+    this.id = const Value.absent(),
+    this.todoId = const Value.absent(),
+    this.progress = const Value.absent(),
+    required Status status,
+    required DateTime createdAt,
+  })  : status = Value(status),
+        createdAt = Value(createdAt);
+  static Insertable<Statistic> custom({
+    Expression<int>? id,
+    Expression<int>? todoId,
+    Expression<int>? progress,
+    Expression<int>? status,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (todoId != null) 'todo_id': todoId,
+      if (progress != null) 'progress': progress,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  StatisticsCompanion copyWith(
+      {Value<int>? id,
+      Value<int?>? todoId,
+      Value<int>? progress,
+      Value<Status>? status,
+      Value<DateTime>? createdAt}) {
+    return StatisticsCompanion(
+      id: id ?? this.id,
+      todoId: todoId ?? this.todoId,
+      progress: progress ?? this.progress,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (todoId.present) {
+      map['todo_id'] = Variable<int>(todoId.value);
+    }
+    if (progress.present) {
+      map['progress'] = Variable<int>(progress.value);
+    }
+    if (status.present) {
+      final converter = Statistics.$converter0;
+      map['status'] = Variable<int>(converter.toSql(status.value));
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StatisticsCompanion(')
+          ..write('id: $id, ')
+          ..write('todoId: $todoId, ')
+          ..write('progress: $progress, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class Statistics extends Table with TableInfo<Statistics, Statistic> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  Statistics(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _todoIdMeta = const VerificationMeta('todoId');
+  late final GeneratedColumn<int> todoId = GeneratedColumn<int>(
+      'todo_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'REFERENCES todos(id)');
+  final VerificationMeta _progressMeta = const VerificationMeta('progress');
+  late final GeneratedColumn<int> progress = GeneratedColumn<int>(
+      'progress', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL DEFAULT 0',
+      defaultValue: const CustomExpression<int>('0'));
+  final VerificationMeta _statusMeta = const VerificationMeta('status');
+  late final GeneratedColumnWithTypeConverter<Status, int> status =
+      GeneratedColumn<int>('status', aliasedName, false,
+              type: DriftSqlType.int,
+              requiredDuringInsert: true,
+              $customConstraints: 'NOT NULL')
+          .withConverter<Status>(Statistics.$converter0);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, todoId, progress, status, createdAt];
+  @override
+  String get aliasedName => _alias ?? 'statistics';
+  @override
+  String get actualTableName => 'statistics';
+  @override
+  VerificationContext validateIntegrity(Insertable<Statistic> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('todo_id')) {
+      context.handle(_todoIdMeta,
+          todoId.isAcceptableOrUnknown(data['todo_id']!, _todoIdMeta));
+    }
+    if (data.containsKey('progress')) {
+      context.handle(_progressMeta,
+          progress.isAcceptableOrUnknown(data['progress']!, _progressMeta));
+    }
+    context.handle(_statusMeta, const VerificationResult.success());
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Statistic map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Statistic(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      todoId: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}todo_id']),
+      progress: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}progress'])!,
+      status: Statistics.$converter0.fromSql(attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}status'])!),
+      createdAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+    );
+  }
+
+  @override
+  Statistics createAlias(String alias) {
+    return Statistics(attachedDatabase, alias);
+  }
+
+  static TypeConverter<Status, int> $converter0 =
+      const EnumIndexConverter<Status>(Status.values);
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 class Todo extends DataClass implements Insertable<Todo> {
   final int id;
   final String title;
   final String? body;
   final int minutes;
-  final Status status;
   final DateTime createdAt;
   final DateTime updatedAt;
   const Todo(
@@ -20,7 +306,6 @@ class Todo extends DataClass implements Insertable<Todo> {
       required this.title,
       this.body,
       required this.minutes,
-      required this.status,
       required this.createdAt,
       required this.updatedAt});
   @override
@@ -32,10 +317,6 @@ class Todo extends DataClass implements Insertable<Todo> {
       map['body'] = Variable<String>(body);
     }
     map['minutes'] = Variable<int>(minutes);
-    {
-      final converter = Todos.$converter0;
-      map['status'] = Variable<int>(converter.toSql(status));
-    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
@@ -47,7 +328,6 @@ class Todo extends DataClass implements Insertable<Todo> {
       title: Value(title),
       body: body == null && nullToAbsent ? const Value.absent() : Value(body),
       minutes: Value(minutes),
-      status: Value(status),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -61,7 +341,6 @@ class Todo extends DataClass implements Insertable<Todo> {
       title: serializer.fromJson<String>(json['title']),
       body: serializer.fromJson<String?>(json['body']),
       minutes: serializer.fromJson<int>(json['minutes']),
-      status: serializer.fromJson<Status>(json['status']),
       createdAt: serializer.fromJson<DateTime>(json['created_at']),
       updatedAt: serializer.fromJson<DateTime>(json['updated_at']),
     );
@@ -74,7 +353,6 @@ class Todo extends DataClass implements Insertable<Todo> {
       'title': serializer.toJson<String>(title),
       'body': serializer.toJson<String?>(body),
       'minutes': serializer.toJson<int>(minutes),
-      'status': serializer.toJson<Status>(status),
       'created_at': serializer.toJson<DateTime>(createdAt),
       'updated_at': serializer.toJson<DateTime>(updatedAt),
     };
@@ -85,7 +363,6 @@ class Todo extends DataClass implements Insertable<Todo> {
           String? title,
           Value<String?> body = const Value.absent(),
           int? minutes,
-          Status? status,
           DateTime? createdAt,
           DateTime? updatedAt}) =>
       Todo(
@@ -93,7 +370,6 @@ class Todo extends DataClass implements Insertable<Todo> {
         title: title ?? this.title,
         body: body.present ? body.value : this.body,
         minutes: minutes ?? this.minutes,
-        status: status ?? this.status,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
       );
@@ -104,7 +380,6 @@ class Todo extends DataClass implements Insertable<Todo> {
           ..write('title: $title, ')
           ..write('body: $body, ')
           ..write('minutes: $minutes, ')
-          ..write('status: $status, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -113,7 +388,7 @@ class Todo extends DataClass implements Insertable<Todo> {
 
   @override
   int get hashCode =>
-      Object.hash(id, title, body, minutes, status, createdAt, updatedAt);
+      Object.hash(id, title, body, minutes, createdAt, updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -122,7 +397,6 @@ class Todo extends DataClass implements Insertable<Todo> {
           other.title == this.title &&
           other.body == this.body &&
           other.minutes == this.minutes &&
-          other.status == this.status &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -132,7 +406,6 @@ class TodosCompanion extends UpdateCompanion<Todo> {
   final Value<String> title;
   final Value<String?> body;
   final Value<int> minutes;
-  final Value<Status> status;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const TodosCompanion({
@@ -140,7 +413,6 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     this.title = const Value.absent(),
     this.body = const Value.absent(),
     this.minutes = const Value.absent(),
-    this.status = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
@@ -149,12 +421,10 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     required String title,
     this.body = const Value.absent(),
     required int minutes,
-    required Status status,
     required DateTime createdAt,
     required DateTime updatedAt,
   })  : title = Value(title),
         minutes = Value(minutes),
-        status = Value(status),
         createdAt = Value(createdAt),
         updatedAt = Value(updatedAt);
   static Insertable<Todo> custom({
@@ -162,7 +432,6 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     Expression<String>? title,
     Expression<String>? body,
     Expression<int>? minutes,
-    Expression<int>? status,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
   }) {
@@ -171,7 +440,6 @@ class TodosCompanion extends UpdateCompanion<Todo> {
       if (title != null) 'title': title,
       if (body != null) 'body': body,
       if (minutes != null) 'minutes': minutes,
-      if (status != null) 'status': status,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
@@ -182,7 +450,6 @@ class TodosCompanion extends UpdateCompanion<Todo> {
       Value<String>? title,
       Value<String?>? body,
       Value<int>? minutes,
-      Value<Status>? status,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt}) {
     return TodosCompanion(
@@ -190,7 +457,6 @@ class TodosCompanion extends UpdateCompanion<Todo> {
       title: title ?? this.title,
       body: body ?? this.body,
       minutes: minutes ?? this.minutes,
-      status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -211,10 +477,6 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     if (minutes.present) {
       map['minutes'] = Variable<int>(minutes.value);
     }
-    if (status.present) {
-      final converter = Todos.$converter0;
-      map['status'] = Variable<int>(converter.toSql(status.value));
-    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -231,7 +493,6 @@ class TodosCompanion extends UpdateCompanion<Todo> {
           ..write('title: $title, ')
           ..write('body: $body, ')
           ..write('minutes: $minutes, ')
-          ..write('status: $status, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -268,13 +529,6 @@ class Todos extends Table with TableInfo<Todos, Todo> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
-  final VerificationMeta _statusMeta = const VerificationMeta('status');
-  late final GeneratedColumnWithTypeConverter<Status, int> status =
-      GeneratedColumn<int>('status', aliasedName, false,
-              type: DriftSqlType.int,
-              requiredDuringInsert: true,
-              $customConstraints: 'NOT NULL')
-          .withConverter<Status>(Todos.$converter0);
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
       'created_at', aliasedName, false,
@@ -289,7 +543,7 @@ class Todos extends Table with TableInfo<Todos, Todo> {
       $customConstraints: 'NOT NULL');
   @override
   List<GeneratedColumn> get $columns =>
-      [id, title, body, minutes, status, createdAt, updatedAt];
+      [id, title, body, minutes, createdAt, updatedAt];
   @override
   String get aliasedName => _alias ?? 'todos';
   @override
@@ -318,7 +572,6 @@ class Todos extends Table with TableInfo<Todos, Todo> {
     } else if (isInserting) {
       context.missing(_minutesMeta);
     }
-    context.handle(_statusMeta, const VerificationResult.success());
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
@@ -348,8 +601,6 @@ class Todos extends Table with TableInfo<Todos, Todo> {
           .read(DriftSqlType.string, data['${effectivePrefix}body']),
       minutes: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}minutes'])!,
-      status: Todos.$converter0.fromSql(attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}status'])!),
       createdAt: attachedDatabase.options.types
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
       updatedAt: attachedDatabase.options.types
@@ -362,26 +613,37 @@ class Todos extends Table with TableInfo<Todos, Todo> {
     return Todos(attachedDatabase, alias);
   }
 
-  static TypeConverter<Status, int> $converter0 =
-      const EnumIndexConverter<Status>(Status.values);
   @override
   bool get dontWriteConstraints => true;
 }
 
 abstract class _$MDatabase extends GeneratedDatabase {
   _$MDatabase(QueryExecutor e) : super(e);
+  late final Statistics statistics = Statistics(this);
   late final Todos todos = Todos(this);
-  Future<int> insertTodo(String var1, String? var2, int var3, Status var4,
-      DateTime var5, DateTime var6) {
+  Future<int> insertStatic(int? var1, int var2, Status var3, DateTime var4) {
     return customInsert(
-      'INSERT INTO todos (title, body, minutes, status, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6)',
+      'INSERT INTO statistics (todo_id, progress, status, created_at) VALUES (?1, ?2, ?3, ?4)',
+      variables: [
+        Variable<int>(var1),
+        Variable<int>(var2),
+        Variable<int>(Statistics.$converter0.toSql(var3)),
+        Variable<DateTime>(var4)
+      ],
+      updates: {statistics},
+    );
+  }
+
+  Future<int> insertTodo(
+      String var1, String? var2, int var3, DateTime var4, DateTime var5) {
+    return customInsert(
+      'INSERT INTO todos (title, body, minutes, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5)',
       variables: [
         Variable<String>(var1),
         Variable<String>(var2),
         Variable<int>(var3),
-        Variable<int>(Todos.$converter0.toSql(var4)),
-        Variable<DateTime>(var5),
-        Variable<DateTime>(var6)
+        Variable<DateTime>(var4),
+        Variable<DateTime>(var5)
       ],
       updates: {todos},
     );
@@ -403,17 +665,16 @@ abstract class _$MDatabase extends GeneratedDatabase {
     }).asyncMap(todos.mapFromRow);
   }
 
-  Future<int> updateTodoById(String var1, String? var2, int var3, Status var4,
-      DateTime var5, int var6) {
+  Future<int> updateTodoById(
+      String var1, String? var2, int var3, DateTime var4, int var5) {
     return customUpdate(
-      'UPDATE todos SET title = ?1, body = ?2, minutes = ?3, status = ?4, updated_at = ?5 WHERE id = ?6',
+      'UPDATE todos SET title = ?1, body = ?2, minutes = ?3, updated_at = ?4 WHERE id = ?5',
       variables: [
         Variable<String>(var1),
         Variable<String>(var2),
         Variable<int>(var3),
-        Variable<int>(Todos.$converter0.toSql(var4)),
-        Variable<DateTime>(var5),
-        Variable<int>(var6)
+        Variable<DateTime>(var4),
+        Variable<int>(var5)
       ],
       updates: {todos},
       updateKind: UpdateKind.update,
@@ -433,5 +694,5 @@ abstract class _$MDatabase extends GeneratedDatabase {
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [todos];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [statistics, todos];
 }

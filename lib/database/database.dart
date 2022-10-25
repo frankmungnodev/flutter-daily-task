@@ -9,7 +9,7 @@ import '../utils/status_enum.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(include: {'tables/todo.drift'})
+@DriftDatabase(include: {'tables/todo.drift', 'tables/statistic.drift'})
 class MDatabase extends _$MDatabase {
   MDatabase() : super(_openConnection());
 
