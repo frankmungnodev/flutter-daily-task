@@ -16,7 +16,7 @@ class DBController extends GetxController {
   }
 
   insertTodo(String title, String? body) async {
-    int currentTime = DateTime.now().millisecondsSinceEpoch;
+    var currentTime = DateTime.now();
 
     int success = await _database.insertTodo(
       title,
@@ -38,7 +38,7 @@ class DBController extends GetxController {
       title,
       body,
       status,
-      DateTime.now().millisecondsSinceEpoch,
+      DateTime.now(),
       id,
     );
     debugPrint('Update todo: $success');

@@ -5,8 +5,8 @@ CREATE TABLE todos(
     title TEXT NOT NULL,
     body TEXT,
     status ENUM(Status) NOT NULL,
-    created_at INTEGER NOT NULL,
-    updated_at INTEGER NOT NULL,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL,
 );
 
 insertTodo: INSERT INTO todos (title, body, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?);

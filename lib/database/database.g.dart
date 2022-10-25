@@ -12,8 +12,8 @@ class Todo extends DataClass implements Insertable<Todo> {
   final String title;
   final String? body;
   final Status status;
-  final int createdAt;
-  final int updatedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
   const Todo(
       {required this.id,
       required this.title,
@@ -33,8 +33,8 @@ class Todo extends DataClass implements Insertable<Todo> {
       final converter = Todos.$converter0;
       map['status'] = Variable<int>(converter.toSql(status));
     }
-    map['created_at'] = Variable<int>(createdAt);
-    map['updated_at'] = Variable<int>(updatedAt);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
   }
 
@@ -57,8 +57,8 @@ class Todo extends DataClass implements Insertable<Todo> {
       title: serializer.fromJson<String>(json['title']),
       body: serializer.fromJson<String?>(json['body']),
       status: serializer.fromJson<Status>(json['status']),
-      createdAt: serializer.fromJson<int>(json['created_at']),
-      updatedAt: serializer.fromJson<int>(json['updated_at']),
+      createdAt: serializer.fromJson<DateTime>(json['created_at']),
+      updatedAt: serializer.fromJson<DateTime>(json['updated_at']),
     );
   }
   @override
@@ -69,8 +69,8 @@ class Todo extends DataClass implements Insertable<Todo> {
       'title': serializer.toJson<String>(title),
       'body': serializer.toJson<String?>(body),
       'status': serializer.toJson<Status>(status),
-      'created_at': serializer.toJson<int>(createdAt),
-      'updated_at': serializer.toJson<int>(updatedAt),
+      'created_at': serializer.toJson<DateTime>(createdAt),
+      'updated_at': serializer.toJson<DateTime>(updatedAt),
     };
   }
 
@@ -79,8 +79,8 @@ class Todo extends DataClass implements Insertable<Todo> {
           String? title,
           Value<String?> body = const Value.absent(),
           Status? status,
-          int? createdAt,
-          int? updatedAt}) =>
+          DateTime? createdAt,
+          DateTime? updatedAt}) =>
       Todo(
         id: id ?? this.id,
         title: title ?? this.title,
@@ -122,8 +122,8 @@ class TodosCompanion extends UpdateCompanion<Todo> {
   final Value<String> title;
   final Value<String?> body;
   final Value<Status> status;
-  final Value<int> createdAt;
-  final Value<int> updatedAt;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
   const TodosCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
@@ -137,8 +137,8 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     required String title,
     this.body = const Value.absent(),
     required Status status,
-    required int createdAt,
-    required int updatedAt,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   })  : title = Value(title),
         status = Value(status),
         createdAt = Value(createdAt),
@@ -148,8 +148,8 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     Expression<String>? title,
     Expression<String>? body,
     Expression<int>? status,
-    Expression<int>? createdAt,
-    Expression<int>? updatedAt,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -166,8 +166,8 @@ class TodosCompanion extends UpdateCompanion<Todo> {
       Value<String>? title,
       Value<String?>? body,
       Value<Status>? status,
-      Value<int>? createdAt,
-      Value<int>? updatedAt}) {
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt}) {
     return TodosCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -195,10 +195,10 @@ class TodosCompanion extends UpdateCompanion<Todo> {
       map['status'] = Variable<int>(converter.toSql(status.value));
     }
     if (createdAt.present) {
-      map['created_at'] = Variable<int>(createdAt.value);
+      map['created_at'] = Variable<DateTime>(createdAt.value);
     }
     if (updatedAt.present) {
-      map['updated_at'] = Variable<int>(updatedAt.value);
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     return map;
   }
@@ -248,15 +248,15 @@ class Todos extends Table with TableInfo<Todos, Todo> {
               $customConstraints: 'NOT NULL')
           .withConverter<Status>(Todos.$converter0);
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
-  late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
       'created_at', aliasedName, false,
-      type: DriftSqlType.int,
+      type: DriftSqlType.dateTime,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
-  late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
-      type: DriftSqlType.int,
+      type: DriftSqlType.dateTime,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   @override
@@ -315,9 +315,9 @@ class Todos extends Table with TableInfo<Todos, Todo> {
       status: Todos.$converter0.fromSql(attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}status'])!),
       createdAt: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
       updatedAt: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
     );
   }
 
@@ -336,15 +336,15 @@ abstract class _$MDatabase extends GeneratedDatabase {
   _$MDatabase(QueryExecutor e) : super(e);
   late final Todos todos = Todos(this);
   Future<int> insertTodo(
-      String var1, String? var2, Status var3, int var4, int var5) {
+      String var1, String? var2, Status var3, DateTime var4, DateTime var5) {
     return customInsert(
       'INSERT INTO todos (title, body, status, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5)',
       variables: [
         Variable<String>(var1),
         Variable<String>(var2),
         Variable<int>(Todos.$converter0.toSql(var3)),
-        Variable<int>(var4),
-        Variable<int>(var5)
+        Variable<DateTime>(var4),
+        Variable<DateTime>(var5)
       ],
       updates: {todos},
     );
@@ -367,14 +367,14 @@ abstract class _$MDatabase extends GeneratedDatabase {
   }
 
   Future<int> updateTodoById(
-      String var1, String? var2, Status var3, int var4, int var5) {
+      String var1, String? var2, Status var3, DateTime var4, int var5) {
     return customUpdate(
       'UPDATE todos SET title = ?1, body = ?2, status = ?3, updated_at = ?4 WHERE id = ?5',
       variables: [
         Variable<String>(var1),
         Variable<String>(var2),
         Variable<int>(Todos.$converter0.toSql(var3)),
-        Variable<int>(var4),
+        Variable<DateTime>(var4),
         Variable<int>(var5)
       ],
       updates: {todos},
