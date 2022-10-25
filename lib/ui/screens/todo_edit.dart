@@ -38,9 +38,35 @@ class TodoEditScreen extends StatelessWidget {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Title cannot be empty!';
+                    return 'Title cannot be empty.';
                   } else if (value.length < 3) {
-                    return 'Title cannot be less than 3 characters!';
+                    return 'Title cannot be less than 3 characters.';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: controller.minutesController,
+                maxLines: 1,
+                maxLength: 3,
+                keyboardType: const TextInputType.numberWithOptions(
+                  signed: false,
+                  decimal: false,
+                ),
+                textInputAction: TextInputAction.done,
+                decoration: const InputDecoration(
+                  label: Text('Minutes'),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Minutes cannot be empty.';
+                  } else {
+                    var minutes = int.tryParse(value);
+                    if (minutes is! int) {
+                      return "Minutes cannot contains decimal.";
+                    } else if (minutes <= 0) {
+                      return "Minutes cannot be less than 1.";
+                    }
                   }
                   return null;
                 },

@@ -15,12 +15,13 @@ class DBController extends GetxController {
     return await _database.getTodoById(id).getSingle();
   }
 
-  insertTodo(String title, String? body) async {
+  insertTodo(String title, String? body, int minutes) async {
     var currentTime = DateTime.now();
 
     int success = await _database.insertTodo(
       title,
       body,
+      minutes,
       Status.pending,
       currentTime,
       currentTime,
@@ -31,12 +32,14 @@ class DBController extends GetxController {
   updateTodo(
     String title,
     String? body,
+    int minutes,
     Status status,
     int id,
   ) async {
     int success = await _database.updateTodoById(
       title,
       body,
+      minutes,
       status,
       DateTime.now(),
       id,

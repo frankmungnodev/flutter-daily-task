@@ -9,6 +9,7 @@ class TodoEditController extends GetxController {
 
   final titleController = TextEditingController();
   final bodyController = TextEditingController();
+  final minutesController = TextEditingController(text: '5');
 
   final formKey = GlobalKey<FormState>();
 
@@ -28,6 +29,7 @@ class TodoEditController extends GetxController {
       _todo = todo;
       titleController.text = todo.title;
       bodyController.text = todo.body ?? '';
+      minutesController.text = todo.minutes.toString();
     });
   }
 
@@ -37,6 +39,7 @@ class TodoEditController extends GetxController {
         _dbController.updateTodo(
           titleController.text,
           bodyController.text,
+          int.parse(minutesController.text),
           _todo!.status,
           _todo!.id,
         );
@@ -44,6 +47,7 @@ class TodoEditController extends GetxController {
         _dbController.insertTodo(
           titleController.text,
           bodyController.text,
+          int.parse(minutesController.text),
         );
       }
       Get.back();
