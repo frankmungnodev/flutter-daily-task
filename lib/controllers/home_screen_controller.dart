@@ -30,14 +30,18 @@ class HomeScreenController extends GetxController {
   setStatus(Status status, int todoId) async {
     var exists =
         await _database.getTodayStatisticOfTodo(todoId).getSingleOrNull();
-    debugPrint('Today statistic of todo $todoId => $exists');
     if (exists == null) {
-      await _database.insertStatistic(
+      var dateString = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      var insertStatistic = await _database.insertStatistic(
         todoId,
         status,
-        DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        dateString,
+      );
+      debugPrint(
+        'Insert new statistic status: $insertStatistic, date: $dateString',
       );
     } else {
+      debugPrint('Update statistic of todo id: $todoId => $exists');
       updateStatistic(exists.id, exists.progress, status);
     }
   }
@@ -50,8 +54,8 @@ class HomeScreenController extends GetxController {
     var deleteStatistic = await _database.deleteTodoStatistics(id);
     var deleteTodo = await _database.deleteTodoById(id);
 
-    debugPrint('Delete todo statistics: $deleteStatistic');
-    debugPrint('Delete todo: $deleteTodo');
+    debugPrint('Delete todo statistics status: $deleteStatistic');
+    debugPrint('Delete todo status: $deleteTodo');
   }
 
   _listenStatisDataChanges() async {
