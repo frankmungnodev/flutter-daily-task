@@ -3,31 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_list/controllers/home_screen_controller.dart';
 import 'package:todo_list/database/database.dart';
-import 'package:todo_list/ui/models/todo_statics.dart';
 import 'package:todo_list/ui/routing.dart';
 
 import '../../utils/status_enum.dart';
 
 class TodoItem extends StatelessWidget {
-  final TodoStatics todoStatics;
+  final TodosWithStatisticResult todoWithStatis;
 
   TodoItem({
     Key? key,
-    required this.todoStatics,
+    required this.todoWithStatis,
   }) : super(key: key);
 
   final controller = Get.find<HomeScreenController>();
 
-  _toggleExpand() {
-    controller.toggleExpand(todoStatics.todo.id);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final todo = todoWithStatis.todo;
+    final statistic = todoWithStatis.statistic;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: InkWell(
-        onTap: _toggleExpand,
+        onTap: () => controller.toggleExpand(todo.id),
         child: IntrinsicHeight(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,17 +34,16 @@ class TodoItem extends StatelessWidget {
                 indent: 5,
                 endIndent: 5,
                 thickness: 1,
-                color: todoStatics.static?.status.color,
+                color: statistic?.status.color ?? Colors.grey,
               ),
               Expanded(
                 child: Column(
                   children: [
                     TodoCollapsed(
-                      todo: todoStatics.todo,
-                      toggleExpand: _toggleExpand,
+                      todoWithStatis: todoWithStatis,
                     ),
                     TodoExpanded(
-                      todo: todoStatics.todo,
+                      todoWithStatis: todoWithStatis,
                     ),
                   ],
                 ),
@@ -61,21 +58,21 @@ class TodoItem extends StatelessWidget {
 
 // Minimized State
 class TodoCollapsed extends StatelessWidget {
-  final Todo todo;
-  final void Function() toggleExpand;
+  final TodosWithStatisticResult todoWithStatis;
 
-  TodoCollapsed({
+  const TodoCollapsed({
     Key? key,
-    required this.todo,
-    required this.toggleExpand,
+    required this.todoWithStatis,
   }) : super(key: key);
-
-  final controller = Get.find<HomeScreenController>();
 
   @override
   Widget build(BuildContext context) {
+    final todo = todoWithStatis.todo;
+    final expandedTodo = Get.find<HomeScreenController>().expandedTodo;
+
     return Container(
       padding: const EdgeInsets.symmetric(
+        vertical: 8,
         horizontal: 16,
       ),
       child: Row(
@@ -94,17 +91,13 @@ class TodoCollapsed extends StatelessWidget {
               ),
             ],
           ),
-          IconButton(
-            onPressed: () => toggleExpand(),
-            icon: Obx(
-              () => Icon(
-                (controller.expandedTodo != null &&
-                        controller.expandedTodo == todo.id)
-                    ? CupertinoIcons.chevron_up
-                    : CupertinoIcons.chevron_down,
-              ),
+          Obx(
+            () => Icon(
+              (expandedTodo != null && expandedTodo == todo.id)
+                  ? CupertinoIcons.chevron_up
+                  : CupertinoIcons.chevron_down,
             ),
-          )
+          ),
         ],
       ),
     );
@@ -113,20 +106,23 @@ class TodoCollapsed extends StatelessWidget {
 
 // Expanded state
 class TodoExpanded extends StatelessWidget {
-  final Todo todo;
+  final TodosWithStatisticResult todoWithStatis;
 
   TodoExpanded({
     Key? key,
-    required this.todo,
+    required this.todoWithStatis,
   }) : super(key: key);
 
-  final _homeController = Get.find<HomeScreenController>();
+  final _controller = Get.find<HomeScreenController>();
 
   @override
   Widget build(BuildContext context) {
+    final todo = todoWithStatis.todo;
+    final statistic = todoWithStatis.statistic;
+    final expandedTodo = _controller.expandedTodo;
+
     return Obx(
-      (() => (_homeController.expandedTodo != null &&
-              _homeController.expandedTodo == todo.id)
+      (() => (expandedTodo != null && expandedTodo == todo.id)
           ? Column(
               children: [
                 todo.body != null && todo.body!.isNotEmpty
@@ -146,17 +142,12 @@ class TodoExpanded extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () {
-                        // var status = todo.status == Status.pending
-                        //     ? Status.ongoing
-                        //     : todo.status == Status.ongoing
-                        //         ? Status.pause
-                        //         : Status.ongoing;
-                        _homeController.setStatus(
-                          Status.done,
+                        _controller.setStatus(
+                          statistic?.status.buttonAction ?? Status.ongoing,
                           todo.id,
                         );
                       },
-                      child: Text('Start'),
+                      child: Text(statistic?.status.buttonText ?? 'Start'),
                     ),
                     TextButton(
                       onPressed: () => Get.toNamed(
@@ -176,7 +167,7 @@ class TodoExpanded extends StatelessWidget {
                           ),
                           confirm: TextButton(
                             onPressed: () {
-                              _homeController.deleteTodo(todo.id);
+                              _controller.deleteTodo(todo.id);
                               Get.back();
                             },
                             child: const Text('Confrim'),

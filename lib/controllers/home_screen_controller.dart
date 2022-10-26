@@ -1,22 +1,22 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:todo_list/controllers/db_controller.dart';
-import 'package:todo_list/ui/models/todo_statics.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_list/utils/status_enum.dart';
 
 import '../database/database.dart';
 
 class HomeScreenController extends GetxController {
-  final _dbController = Get.put(DBController());
+  final _database = Get.find<MDatabase>();
 
-  var todoStatistic = <TodoStatics>[].obs;
+  var homeList = <TodosWithStatisticResult>[].obs;
+
   final _expandedTodo = RxnInt(null);
   get expandedTodo => _expandedTodo;
 
   @override
   onInit() {
+    _listenStatisDataChanges();
     super.onInit();
-    _listenTodoDataChanges();
   }
 
   toggleExpand(int id) {
@@ -27,30 +27,38 @@ class HomeScreenController extends GetxController {
     }
   }
 
-  deleteTodo(int id) async {
-    _dbController.deleteTodo(id);
-  }
-
-  setStatus(Status status, int id) async {
-    _dbController.updateTodoStatus(status, id);
-  }
-
-  _listenTodoDataChanges() async {
-    _dbController.getTodoStatics().listen((types) {
-      debugPrint("Get all todos: ${types.length}");
-      todoStatistic.clear();
-      todoStatistic.addAll(
-        types.map(
-          (type) => TodoStatics(
-            type.readTable(
-              Todos(Get.find<MDatabase>()),
-            ),
-            type.readTableOrNull(
-              Statistics(Get.find<MDatabase>()),
-            ),
-          ),
-        ),
+  setStatus(Status status, int todoId) async {
+    var exists =
+        await _database.getTodayStatisticOfTodo(todoId).getSingleOrNull();
+    debugPrint('Today statistic of todo $todoId => $exists');
+    if (exists == null) {
+      await _database.insertStatistic(
+        todoId,
+        status,
+        DateFormat('yyyy-MM-dd').format(DateTime.now()),
       );
+    } else {
+      updateStatistic(exists.id, exists.progress, status);
+    }
+  }
+
+  updateStatistic(int statisticId, int progress, Status status) async {
+    await _database.updateStatistic(progress, status, statisticId);
+  }
+
+  deleteTodo(int id) async {
+    var deleteStatistic = await _database.deleteTodoStatistics(id);
+    var deleteTodo = await _database.deleteTodoById(id);
+
+    debugPrint('Delete todo statistics: $deleteStatistic');
+    debugPrint('Delete todo: $deleteTodo');
+  }
+
+  _listenStatisDataChanges() async {
+    _database.todosWithStatistic().watch().listen((list) {
+      debugPrint('Todo changes total: ${list.length}');
+      homeList.clear();
+      homeList.addAll(list);
     });
   }
 }

@@ -59,6 +59,19 @@ extension StatusExtensions on Status {
     }
   }
 
+  get buttonAction {
+    switch (this) {
+      case Status.pending:
+        return Status.ongoing;
+      case Status.ongoing:
+        return Status.pause;
+      case Status.pause:
+        return Status.ongoing;
+      case Status.done:
+        throw Exception("Can't click after status done.");
+    }
+  }
+
   static Status getFromValue(int value) {
     switch (value) {
       case 0:

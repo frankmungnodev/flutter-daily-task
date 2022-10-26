@@ -19,7 +19,7 @@ class App extends StatelessWidget {
       theme: ThemeData(brightness: Brightness.dark),
       initialRoute: MRouting.app,
       initialBinding: BindingsBuilder(() {
-        Get.put(MDatabase());
+        Get.lazyPut(() => MDatabase());
       }),
       getPages: MRouting.pages,
     );

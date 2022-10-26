@@ -49,10 +49,7 @@ class TodoEditScreen extends StatelessWidget {
                 controller: controller.minutesController,
                 maxLines: 1,
                 maxLength: 3,
-                keyboardType: const TextInputType.numberWithOptions(
-                  signed: false,
-                  decimal: false,
-                ),
+                keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
                 decoration: const InputDecoration(
                   label: Text('Minutes'),
