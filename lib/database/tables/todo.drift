@@ -4,15 +4,15 @@ CREATE TABLE todos(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     body TEXT,
-    minutes INT NOT NULL,
+    duration INT NOT NULL,
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL,
 );
 
-insertTodo: INSERT INTO todos (title, body, minutes, created_at, updated_at) VALUES (?, ?, ?, ?, ?);
+insertTodo: INSERT INTO todos (title, body, duration, created_at, updated_at) VALUES (?, ?, ?, ?, ?);
 getAllTodos: SELECT * FROM todos ORDER BY created_at DESC;
 getTodoById: SELECT * FROM todos WHERE id = ?;
-updateTodoById: UPDATE todos SET title = ?, body = ?, minutes = ?, updated_at = ? WHERE id = ?;
+updateTodoById: UPDATE todos SET title = ?, body = ?, duration = ?, updated_at = ? WHERE id = ?;
 deleteTodoById: DELETE FROM todos WHERE id = ?;
 
-todosWithStatistic: SELECT t.** AS "todo", s.** AS "statistic" FROM todos t LEFT JOIN statistics s ON t.id = s.todo_id AND s.created_at = date('now');
+todosWithStatistic: SELECT t.** AS "todo", s.** AS "statistic" FROM todos t LEFT JOIN statistics s ON t.id = s.todo_id AND s.created_at = ?;

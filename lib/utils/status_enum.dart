@@ -55,7 +55,7 @@ extension StatusExtensions on Status {
       case Status.pause:
         return "Resume";
       case Status.done:
-        return "Restart";
+        return "Start";
     }
   }
 
@@ -68,7 +68,7 @@ extension StatusExtensions on Status {
       case Status.pause:
         return Status.ongoing;
       case Status.done:
-        throw Exception("Can't click after status done.");
+        return Status.done;
     }
   }
 

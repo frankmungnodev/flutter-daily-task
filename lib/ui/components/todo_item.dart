@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:todo_list/controllers/home_screen_controller.dart';
 import 'package:todo_list/database/database.dart';
 import 'package:todo_list/ui/routing.dart';
+import 'package:todo_list/utils/extension_todo_with_statis.dart';
 
 import '../../utils/status_enum.dart';
 
@@ -20,7 +21,6 @@ class TodoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final todo = todoWithStatis.todo;
-    final statistic = todoWithStatis.statistic;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -34,7 +34,7 @@ class TodoItem extends StatelessWidget {
                 indent: 5,
                 endIndent: 5,
                 thickness: 1,
-                color: statistic?.status.color ?? Colors.grey,
+                color: todoWithStatis.getStatus.color,
               ),
               Expanded(
                 child: Column(
@@ -68,6 +68,7 @@ class TodoCollapsed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final todo = todoWithStatis.todo;
+
     final expandedTodo = Get.find<HomeScreenController>().expandedTodo;
 
     return Container(
@@ -86,7 +87,7 @@ class TodoCollapsed extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
-                '${0}/${todo.minutes} Minutes',
+                '${todoWithStatis.progressInMinutes}/${todoWithStatis.durationInMinutes} Minutes',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
@@ -140,15 +141,16 @@ class TodoExpanded extends StatelessWidget {
                     : const Center(),
                 Row(
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        _controller.setStatus(
-                          statistic?.status.buttonAction ?? Status.ongoing,
-                          todo.id,
-                        );
-                      },
-                      child: Text(statistic?.status.buttonText ?? 'Start'),
-                    ),
+                    todo.duration > (statistic?.progress ?? 0)
+                        ? TextButton(
+                            onPressed: () {
+                              _controller.setStatus(
+                                todoWithStatistic: todoWithStatis,
+                              );
+                            },
+                            child: Text(todoWithStatis.getStatus.buttonText),
+                          )
+                        : const Center(),
                     TextButton(
                       onPressed: () => Get.toNamed(
                         MRouting.todoEdit,
@@ -157,23 +159,7 @@ class TodoExpanded extends StatelessWidget {
                       child: const Text('Edit'),
                     ),
                     TextButton(
-                      onPressed: () => {
-                        Get.defaultDialog(
-                          title: 'Delete',
-                          middleText: 'Confirm to delete ${todo.title}?',
-                          cancel: TextButton(
-                            onPressed: () => Get.back(),
-                            child: const Text('Cancel'),
-                          ),
-                          confirm: TextButton(
-                            onPressed: () {
-                              _controller.deleteTodo(todo.id);
-                              Get.back();
-                            },
-                            child: const Text('Confrim'),
-                          ),
-                        )
-                      },
+                      onPressed: () => _controller.deleteTodo(todo: todo),
                       child: const Text('Delete'),
                     )
                   ],

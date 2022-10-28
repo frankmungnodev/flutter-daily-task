@@ -1,15 +1,15 @@
-import '../../utils/status_enum.dart';
 import 'todo.drift';
 
 CREATE TABLE statistics(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     todo_id INTEGER REFERENCES todos(id),
     progress INT NOT NULL DEFAULT 0,
-    status ENUM(Status) NOT NULL,
-    created_at TEXT NOT NULL,
+    created_at DATETIME NOT NULL,
 );
 
-insertStatistic: INSERT INTO statistics (todo_id, status, created_at) VALUES (?, ?, ?);
-updateStatistic: UPDATE statistics SET progress = ?, status = ? WHERE id = ?;
-getTodayStatisticOfTodo: SELECT * FROM statistics WHERE todo_id = ? AND created_at = date('now');
+insertStatistic: INSERT INTO statistics (todo_id, created_at) VALUES (?, ?);
+updateStatistic: UPDATE statistics SET progress = ? WHERE id = ? AND created_at = ?;
 deleteTodoStatistics: DELETE FROM statistics WHERE todo_id = ?;
+
+getStatisticById: SELECT * FROM statistics WHERE id = ? AND created_at = ?;
+getStatisticByTodoId: SELECT * FROM statistics WHERE todo_id = ? AND created_at = ?;
