@@ -52,21 +52,28 @@ class HomeScreenController extends GetxController {
     }
   }
 
-  deleteTodo({required Todo todo}) async {
-    Get.defaultDialog(
-      title: 'Delete',
-      middleText: 'Confirm to delete ${todo.title}?',
-      textCancel: 'Cancel',
-      textConfirm: 'Delete',
-      onConfirm: () async {
-        Get.back();
-        var deleteStatistic = await _database.deleteTodoStatistics(todo.id);
-        var deleteTodo = await _database.deleteTodoById(todo.id);
+  deleteTodo({
+    required Todo todo,
+    int? statisticId,
+  }) async {
+    if (ongoingId == statisticId) {
+      Get.snackbar("Can't delete", 'Stop ${todo.title} and delete!');
+    } else {
+      Get.defaultDialog(
+        title: 'Delete',
+        middleText: 'Confirm to delete ${todo.title}?',
+        textCancel: 'Cancel',
+        textConfirm: 'Delete',
+        onConfirm: () async {
+          Get.back();
+          var deleteStatistic = await _database.deleteTodoStatistics(todo.id);
+          var deleteTodo = await _database.deleteTodoById(todo.id);
 
-        debugPrint('Delete todo statistics status: $deleteStatistic');
-        debugPrint('Delete todo status: $deleteTodo');
-      },
-    );
+          debugPrint('Delete todo statistics status: $deleteStatistic');
+          debugPrint('Delete todo status: $deleteTodo');
+        },
+      );
+    }
   }
 
   listenStatisDataChanges({required DateTime date}) async {

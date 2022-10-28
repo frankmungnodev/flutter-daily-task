@@ -153,7 +153,10 @@ class TodoExpanded extends StatelessWidget {
                       child: const Text('Edit'),
                     ),
                     TextButton(
-                      onPressed: () => _controller.deleteTodo(todo: todo),
+                      onPressed: () => _controller.deleteTodo(
+                        todo: todo,
+                        statisticId: todoWithStatis.statistic?.id,
+                      ),
                       child: const Text('Delete'),
                     )
                   ],
