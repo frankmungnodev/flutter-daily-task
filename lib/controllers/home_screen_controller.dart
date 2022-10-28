@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list/utils/extension_todo_with_statis.dart';
-import 'package:todo_list/utils/status_enum.dart';
+import 'package:todo_list/utils/status.dart';
 
 import '../database/database.dart';
 import '../utils/constants.dart';

@@ -12,6 +12,7 @@ class Todo extends DataClass implements Insertable<Todo> {
   final String title;
   final String? body;
   final int duration;
+  final int priority;
   final DateTime createdAt;
   final DateTime updatedAt;
   const Todo(
@@ -19,6 +20,7 @@ class Todo extends DataClass implements Insertable<Todo> {
       required this.title,
       this.body,
       required this.duration,
+      required this.priority,
       required this.createdAt,
       required this.updatedAt});
   @override
@@ -30,6 +32,7 @@ class Todo extends DataClass implements Insertable<Todo> {
       map['body'] = Variable<String>(body);
     }
     map['duration'] = Variable<int>(duration);
+    map['priority'] = Variable<int>(priority);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
@@ -41,6 +44,7 @@ class Todo extends DataClass implements Insertable<Todo> {
       title: Value(title),
       body: body == null && nullToAbsent ? const Value.absent() : Value(body),
       duration: Value(duration),
+      priority: Value(priority),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -54,6 +58,7 @@ class Todo extends DataClass implements Insertable<Todo> {
       title: serializer.fromJson<String>(json['title']),
       body: serializer.fromJson<String?>(json['body']),
       duration: serializer.fromJson<int>(json['duration']),
+      priority: serializer.fromJson<int>(json['priority']),
       createdAt: serializer.fromJson<DateTime>(json['created_at']),
       updatedAt: serializer.fromJson<DateTime>(json['updated_at']),
     );
@@ -66,6 +71,7 @@ class Todo extends DataClass implements Insertable<Todo> {
       'title': serializer.toJson<String>(title),
       'body': serializer.toJson<String?>(body),
       'duration': serializer.toJson<int>(duration),
+      'priority': serializer.toJson<int>(priority),
       'created_at': serializer.toJson<DateTime>(createdAt),
       'updated_at': serializer.toJson<DateTime>(updatedAt),
     };
@@ -76,6 +82,7 @@ class Todo extends DataClass implements Insertable<Todo> {
           String? title,
           Value<String?> body = const Value.absent(),
           int? duration,
+          int? priority,
           DateTime? createdAt,
           DateTime? updatedAt}) =>
       Todo(
@@ -83,6 +90,7 @@ class Todo extends DataClass implements Insertable<Todo> {
         title: title ?? this.title,
         body: body.present ? body.value : this.body,
         duration: duration ?? this.duration,
+        priority: priority ?? this.priority,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
       );
@@ -93,6 +101,7 @@ class Todo extends DataClass implements Insertable<Todo> {
           ..write('title: $title, ')
           ..write('body: $body, ')
           ..write('duration: $duration, ')
+          ..write('priority: $priority, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -101,7 +110,7 @@ class Todo extends DataClass implements Insertable<Todo> {
 
   @override
   int get hashCode =>
-      Object.hash(id, title, body, duration, createdAt, updatedAt);
+      Object.hash(id, title, body, duration, priority, createdAt, updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -110,6 +119,7 @@ class Todo extends DataClass implements Insertable<Todo> {
           other.title == this.title &&
           other.body == this.body &&
           other.duration == this.duration &&
+          other.priority == this.priority &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -119,6 +129,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
   final Value<String> title;
   final Value<String?> body;
   final Value<int> duration;
+  final Value<int> priority;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const TodosCompanion({
@@ -126,6 +137,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     this.title = const Value.absent(),
     this.body = const Value.absent(),
     this.duration = const Value.absent(),
+    this.priority = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
@@ -134,10 +146,12 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     required String title,
     this.body = const Value.absent(),
     required int duration,
+    required int priority,
     required DateTime createdAt,
     required DateTime updatedAt,
   })  : title = Value(title),
         duration = Value(duration),
+        priority = Value(priority),
         createdAt = Value(createdAt),
         updatedAt = Value(updatedAt);
   static Insertable<Todo> custom({
@@ -145,6 +159,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     Expression<String>? title,
     Expression<String>? body,
     Expression<int>? duration,
+    Expression<int>? priority,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
   }) {
@@ -153,6 +168,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
       if (title != null) 'title': title,
       if (body != null) 'body': body,
       if (duration != null) 'duration': duration,
+      if (priority != null) 'priority': priority,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
@@ -163,6 +179,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
       Value<String>? title,
       Value<String?>? body,
       Value<int>? duration,
+      Value<int>? priority,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt}) {
     return TodosCompanion(
@@ -170,6 +187,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
       title: title ?? this.title,
       body: body ?? this.body,
       duration: duration ?? this.duration,
+      priority: priority ?? this.priority,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -190,6 +208,9 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     if (duration.present) {
       map['duration'] = Variable<int>(duration.value);
     }
+    if (priority.present) {
+      map['priority'] = Variable<int>(priority.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -206,6 +227,7 @@ class TodosCompanion extends UpdateCompanion<Todo> {
           ..write('title: $title, ')
           ..write('body: $body, ')
           ..write('duration: $duration, ')
+          ..write('priority: $priority, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -242,6 +264,12 @@ class Todos extends Table with TableInfo<Todos, Todo> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
+  final VerificationMeta _priorityMeta = const VerificationMeta('priority');
+  late final GeneratedColumn<int> priority = GeneratedColumn<int>(
+      'priority', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
       'created_at', aliasedName, false,
@@ -256,7 +284,7 @@ class Todos extends Table with TableInfo<Todos, Todo> {
       $customConstraints: 'NOT NULL');
   @override
   List<GeneratedColumn> get $columns =>
-      [id, title, body, duration, createdAt, updatedAt];
+      [id, title, body, duration, priority, createdAt, updatedAt];
   @override
   String get aliasedName => _alias ?? 'todos';
   @override
@@ -284,6 +312,12 @@ class Todos extends Table with TableInfo<Todos, Todo> {
           duration.isAcceptableOrUnknown(data['duration']!, _durationMeta));
     } else if (isInserting) {
       context.missing(_durationMeta);
+    }
+    if (data.containsKey('priority')) {
+      context.handle(_priorityMeta,
+          priority.isAcceptableOrUnknown(data['priority']!, _priorityMeta));
+    } else if (isInserting) {
+      context.missing(_priorityMeta);
     }
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
@@ -314,6 +348,8 @@ class Todos extends Table with TableInfo<Todos, Todo> {
           .read(DriftSqlType.string, data['${effectivePrefix}body']),
       duration: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}duration'])!,
+      priority: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}priority'])!,
       createdAt: attachedDatabase.options.types
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
       updatedAt: attachedDatabase.options.types
@@ -636,16 +672,17 @@ abstract class _$MDatabase extends GeneratedDatabase {
         }).asyncMap(statistics.mapFromRow);
   }
 
-  Future<int> insertTodo(
-      String var1, String? var2, int var3, DateTime var4, DateTime var5) {
+  Future<int> insertTodo(String var1, String? var2, int var3, int var4,
+      DateTime var5, DateTime var6) {
     return customInsert(
-      'INSERT INTO todos (title, body, duration, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5)',
+      'INSERT INTO todos (title, body, duration, priority, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6)',
       variables: [
         Variable<String>(var1),
         Variable<String>(var2),
         Variable<int>(var3),
-        Variable<DateTime>(var4),
-        Variable<DateTime>(var5)
+        Variable<int>(var4),
+        Variable<DateTime>(var5),
+        Variable<DateTime>(var6)
       ],
       updates: {todos},
     );
@@ -668,15 +705,16 @@ abstract class _$MDatabase extends GeneratedDatabase {
   }
 
   Future<int> updateTodoById(
-      String var1, String? var2, int var3, DateTime var4, int var5) {
+      String var1, String? var2, int var3, int var4, DateTime var5, int var6) {
     return customUpdate(
-      'UPDATE todos SET title = ?1, body = ?2, duration = ?3, updated_at = ?4 WHERE id = ?5',
+      'UPDATE todos SET title = ?1, body = ?2, duration = ?3, priority = ?4, updated_at = ?5 WHERE id = ?6',
       variables: [
         Variable<String>(var1),
         Variable<String>(var2),
         Variable<int>(var3),
-        Variable<DateTime>(var4),
-        Variable<int>(var5)
+        Variable<int>(var4),
+        Variable<DateTime>(var5),
+        Variable<int>(var6)
       ],
       updates: {todos},
       updateKind: UpdateKind.update,
@@ -694,7 +732,7 @@ abstract class _$MDatabase extends GeneratedDatabase {
 
   Selectable<TodosWithStatisticResult> todosWithStatistic(DateTime? var1) {
     return customSelect(
-        'SELECT"t"."id" AS "nested_0.id", "t"."title" AS "nested_0.title", "t"."body" AS "nested_0.body", "t"."duration" AS "nested_0.duration", "t"."created_at" AS "nested_0.created_at", "t"."updated_at" AS "nested_0.updated_at","s"."id" AS "nested_1.id", "s"."todo_id" AS "nested_1.todo_id", "s"."progress" AS "nested_1.progress", "s"."created_at" AS "nested_1.created_at" FROM todos AS t LEFT JOIN statistics AS s ON t.id = s.todo_id AND s.created_at = ?1',
+        'SELECT"t"."id" AS "nested_0.id", "t"."title" AS "nested_0.title", "t"."body" AS "nested_0.body", "t"."duration" AS "nested_0.duration", "t"."priority" AS "nested_0.priority", "t"."created_at" AS "nested_0.created_at", "t"."updated_at" AS "nested_0.updated_at","s"."id" AS "nested_1.id", "s"."todo_id" AS "nested_1.todo_id", "s"."progress" AS "nested_1.progress", "s"."created_at" AS "nested_1.created_at" FROM todos AS t LEFT JOIN statistics AS s ON t.id = s.todo_id AND s.created_at = ?1 ORDER BY t.priority DESC',
         variables: [
           Variable<DateTime>(var1)
         ],

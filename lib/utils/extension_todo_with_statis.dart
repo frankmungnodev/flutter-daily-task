@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:todo_list/controllers/home_screen_controller.dart';
 import 'package:todo_list/database/database.dart';
-import 'package:todo_list/utils/status_enum.dart';
+import 'package:todo_list/utils/extensions.dart';
+import 'package:todo_list/utils/status.dart';
 
 extension TodoWithStatisExtension on TodosWithStatisticResult {
   int get durationInMinutes {
@@ -11,6 +13,10 @@ extension TodoWithStatisExtension on TodosWithStatisticResult {
     return todo.duration < (statistic?.progress ?? 0)
         ? _convertMilliSecondsToMinutes(milliSec: todo.duration)
         : _convertMilliSecondsToMinutes(milliSec: statistic?.progress ?? 0);
+  }
+
+  Color get priorityColor {
+    return todo.priority.priorityColor;
   }
 
   Status get getStatus {

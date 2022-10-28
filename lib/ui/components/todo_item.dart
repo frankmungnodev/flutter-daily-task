@@ -6,7 +6,7 @@ import 'package:todo_list/database/database.dart';
 import 'package:todo_list/ui/routing.dart';
 import 'package:todo_list/utils/extension_todo_with_statis.dart';
 
-import '../../utils/status_enum.dart';
+import '../../utils/status.dart';
 
 class TodoItem extends StatelessWidget {
   final TodosWithStatisticResult todoWithStatis;
@@ -34,7 +34,7 @@ class TodoItem extends StatelessWidget {
                 indent: 5,
                 endIndent: 5,
                 thickness: 3,
-                color: todoWithStatis.getStatus.color,
+                color: todoWithStatis.priorityColor,
               ),
               Expanded(
                 child: Column(

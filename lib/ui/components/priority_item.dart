@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/utils/status_enum.dart';
+
+import '../../utils/priority.dart';
 
 class PriorityItem extends StatelessWidget {
-  final Status priority;
+  final Priority priority;
   final bool selected;
   final void Function() onClick;
 
@@ -29,7 +30,7 @@ class PriorityItem extends StatelessWidget {
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Text(
-              priority.displayName,
+              priority.displayText,
               style: selected
                   ? TextStyle(
                       color: priority.color,

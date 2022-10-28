@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_list/utils/extensions.dart';
 import '../database/database.dart';
+import '../utils/priority.dart';
 
 class TodoEditController extends GetxController {
   final _database = Get.find<MDatabase>();
 
   final titleController = TextEditingController();
   final bodyController = TextEditingController();
-  final minutesController = TextEditingController(text: '5');
+  final durationController = TextEditingController(text: '5');
+  final _priority = Priority.low.obs;
+  Rx<Priority> get priority => _priority;
 
   final formKey = GlobalKey<FormState>();
 
@@ -26,9 +30,14 @@ class TodoEditController extends GetxController {
     _todo = await _database.getTodoById(id).getSingle();
     titleController.text = _todo?.title ?? '';
     bodyController.text = _todo?.body ?? '';
-    minutesController.text = Duration(
+    durationController.text = Duration(
       milliseconds: _todo?.duration ?? 0,
     ).inMinutes.toString();
+    _priority.value = _todo?.priority.value ?? Priority.low;
+  }
+
+  onSelectPriority({required Priority priority}) {
+    _priority.value = priority;
   }
 
   validate() {
@@ -38,7 +47,7 @@ class TodoEditController extends GetxController {
       final currentTime = DateTime.now();
       final duration = Duration(
         minutes: int.parse(
-          minutesController.text,
+          durationController.text,
         ),
       ).inMilliseconds;
 
@@ -47,6 +56,7 @@ class TodoEditController extends GetxController {
           title,
           body,
           duration,
+          _priority.value.value,
           currentTime,
           _todo!.id,
         );
@@ -55,6 +65,7 @@ class TodoEditController extends GetxController {
           title,
           body,
           duration,
+          _priority.value.value,
           currentTime,
           currentTime,
         );
