@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Status',
+                          'Priorities',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         ...Priority.values.map(
