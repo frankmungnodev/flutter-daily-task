@@ -1,10 +1,12 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list/utils/count_down.dart';
 import 'package:todo_list/utils/extension_todo_with_statis.dart';
 import 'package:todo_list/utils/status_enum.dart';
 
 import '../database/database.dart';
+import '../utils/constants.dart';
 
 class HomeScreenController extends GetxController {
   final _database = Get.find<MDatabase>();
@@ -22,6 +24,7 @@ class HomeScreenController extends GetxController {
     var now = DateTime.now();
     _today = DateTime(now.year, now.month, now.day);
     listenStatisDataChanges(date: _today);
+    _checkTheme();
     super.onInit();
   }
 
@@ -133,5 +136,11 @@ class HomeScreenController extends GetxController {
       progressSec: Duration(milliseconds: statistic.progress).inSeconds,
       durationSec: Duration(milliseconds: todo.duration).inSeconds,
     );
+  }
+
+  _checkTheme() async {
+    final preferences = await SharedPreferences.getInstance();
+    final isDarkMode = preferences.getBool(Constants.themePreferences) ?? true;
+    Get.changeTheme(isDarkMode ? ThemeData.dark() : ThemeData.light());
   }
 }

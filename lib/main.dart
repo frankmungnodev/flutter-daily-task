@@ -17,7 +17,6 @@ class App extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Todo List',
-      theme: ThemeData(brightness: Brightness.dark),
       initialRoute: MRouting.app,
       initialBinding: BindingsBuilder(() {
         Get.lazyPut(() => MDatabase());
