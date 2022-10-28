@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:todo_list/controllers/home_screen_controller.dart';
 import 'package:todo_list/database/database.dart';
 import 'package:todo_list/utils/extensions.dart';
@@ -13,6 +13,23 @@ extension TodoWithStatisExtension on TodosWithStatisticResult {
     return todo.duration < (statistic?.progress ?? 0)
         ? _convertMilliSecondsToMinutes(milliSec: todo.duration)
         : _convertMilliSecondsToMinutes(milliSec: statistic?.progress ?? 0);
+  }
+
+  double get progressPercent {
+    return (statistic?.progress ?? 0) / todo.duration;
+  }
+
+  IconData get icon {
+    switch (getStatus) {
+      case Status.pending:
+        return CupertinoIcons.play;
+      case Status.ongoing:
+        return CupertinoIcons.pause;
+      case Status.pause:
+        return CupertinoIcons.play;
+      case Status.done:
+        return CupertinoIcons.check_mark;
+    }
   }
 
   Color get priorityColor {

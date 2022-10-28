@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_list/controllers/home_screen_controller.dart';
 import 'package:todo_list/database/database.dart';
 import 'package:todo_list/ui/routing.dart';
 import 'package:todo_list/utils/extension_todo_with_statis.dart';
-
-import '../../utils/status.dart';
 
 class TodoItem extends StatelessWidget {
   final TodosWithStatisticResult todoWithStatis;
@@ -60,16 +57,16 @@ class TodoItem extends StatelessWidget {
 class TodoCollapsed extends StatelessWidget {
   final TodosWithStatisticResult todoWithStatis;
 
-  const TodoCollapsed({
+  TodoCollapsed({
     Key? key,
     required this.todoWithStatis,
   }) : super(key: key);
 
+  final _controller = Get.find<HomeScreenController>();
+
   @override
   Widget build(BuildContext context) {
     final todo = todoWithStatis.todo;
-
-    final expandedTodo = Get.find<HomeScreenController>().expandedTodo;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -92,13 +89,21 @@ class TodoCollapsed extends StatelessWidget {
               ),
             ],
           ),
-          Obx(
-            () => Icon(
-              (expandedTodo != null && expandedTodo == todo.id)
-                  ? CupertinoIcons.chevron_up
-                  : CupertinoIcons.chevron_down,
+          IconButton(
+            onPressed: () {
+              _controller.setStatus(todoWithStatistic: todoWithStatis);
+            },
+            icon: Stack(
+              alignment: Alignment.center,
+              children: [
+                Icon(todoWithStatis.icon),
+                CircularProgressIndicator(
+                  value: todoWithStatis.progressPercent,
+                  semanticsLabel: "${todo.title}'s progress",
+                ),
+              ],
             ),
-          ),
+          )
         ],
       ),
     );
@@ -119,7 +124,6 @@ class TodoExpanded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final todo = todoWithStatis.todo;
-    final statistic = todoWithStatis.statistic;
     final expandedTodo = _controller.expandedTodo;
 
     return Obx(
@@ -141,16 +145,6 @@ class TodoExpanded extends StatelessWidget {
                     : const Center(),
                 Row(
                   children: [
-                    todo.duration > (statistic?.progress ?? 0)
-                        ? TextButton(
-                            onPressed: () {
-                              _controller.setStatus(
-                                todoWithStatistic: todoWithStatis,
-                              );
-                            },
-                            child: Text(todoWithStatis.getStatus.buttonText),
-                          )
-                        : const Center(),
                     TextButton(
                       onPressed: () => Get.toNamed(
                         MRouting.todoEdit,

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 enum Status { pending, ongoing, pause, done }
 
 extension StatusExtensions on Status {
@@ -28,19 +26,6 @@ extension StatusExtensions on Status {
         return 3;
       default:
         return 0;
-    }
-  }
-
-  String get buttonText {
-    switch (this) {
-      case Status.pending:
-        return "Start";
-      case Status.ongoing:
-        return "Pause";
-      case Status.pause:
-        return "Resume";
-      case Status.done:
-        return "Start";
     }
   }
 }
