@@ -1,5 +1,5 @@
+import 'package:todo_list/controllers/home_screen_controller.dart';
 import 'package:todo_list/database/database.dart';
-import 'package:todo_list/utils/count_down.dart';
 import 'package:todo_list/utils/status_enum.dart';
 
 extension TodoWithStatisExtension on TodosWithStatisticResult {
@@ -20,7 +20,9 @@ extension TodoWithStatisExtension on TodosWithStatisticResult {
     if (progress <= 0) {
       return Status.pending;
     } else if (progress < total) {
-      return CountDown.id == statistic?.id ? Status.ongoing : Status.pause;
+      return HomeScreenController.ongoingId == statistic?.id
+          ? Status.ongoing
+          : Status.pause;
     } else if (progress == total) {
       return Status.done;
     }

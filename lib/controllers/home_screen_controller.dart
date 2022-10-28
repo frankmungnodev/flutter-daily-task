@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo_list/utils/count_down.dart';
 import 'package:todo_list/utils/extension_todo_with_statis.dart';
 import 'package:todo_list/utils/status_enum.dart';
 
@@ -10,7 +11,10 @@ import '../utils/constants.dart';
 
 class HomeScreenController extends GetxController {
   final _database = Get.find<MDatabase>();
-  final _countdown = Get.find<CountDown>();
+
+  // Timer
+  static int? ongoingId;
+  Timer? _timer;
 
   final _expandedTodo = RxnInt(null);
   get expandedTodo => _expandedTodo;
@@ -36,20 +40,12 @@ class HomeScreenController extends GetxController {
     }
   }
 
-  listenStatisDataChanges({required DateTime date}) async {
-    _database.todosWithStatistic(date).watch().listen((list) {
-      debugPrint('Todo changes total: ${list.length}');
-      homeList.clear();
-      homeList.addAll(list);
-    });
-  }
-
   setStatus({
     required TodosWithStatisticResult todoWithStatistic,
   }) async {
     final statistic = todoWithStatistic.statistic;
 
-    if (CountDown.id != null && CountDown.id != statistic?.id) {
+    if (ongoingId != null && ongoingId != statistic?.id) {
       _alertOngoingExists(todosWithStatistic: todoWithStatistic);
     } else {
       _insertOrUpdateStatistic(todosWithStatistic: todoWithStatistic);
@@ -73,6 +69,14 @@ class HomeScreenController extends GetxController {
     );
   }
 
+  listenStatisDataChanges({required DateTime date}) async {
+    _database.todosWithStatistic(date).watch().listen((list) {
+      debugPrint('Todo changes total: ${list.length}');
+      homeList.clear();
+      homeList.addAll(list);
+    });
+  }
+
   _alertOngoingExists({
     required TodosWithStatisticResult todosWithStatistic,
   }) {
@@ -84,7 +88,7 @@ class HomeScreenController extends GetxController {
       textCancel: 'Cancel',
       onConfirm: () {
         Get.back();
-        _countdown.stop();
+        _stopTimer();
         _insertOrUpdateStatistic(todosWithStatistic: todosWithStatistic);
       },
     );
@@ -118,7 +122,7 @@ class HomeScreenController extends GetxController {
           break;
         case Status.ongoing:
           _database.updateStatistic(statistic.progress, statistic.id, _today);
-          _countdown.stop();
+          _stopTimer();
           break;
         case Status.pause:
           _startCountDown(statistic, todo);
@@ -131,11 +135,29 @@ class HomeScreenController extends GetxController {
   }
 
   _startCountDown(Statistic statistic, Todo todo) async {
-    _countdown.start(
-      statisId: statistic.id,
-      progressSec: Duration(milliseconds: statistic.progress).inSeconds,
-      durationSec: Duration(milliseconds: todo.duration).inSeconds,
-    );
+    final progressInSeconds =
+        Duration(milliseconds: statistic.progress).inSeconds;
+
+    ongoingId = statistic.id;
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+      var currentProgressSec = timer.tick + progressInSeconds;
+      debugPrint('Update progress of $ongoingId: $currentProgressSec');
+
+      _database.updateStatistic(
+        Duration(seconds: currentProgressSec).inMilliseconds,
+        ongoingId!,
+        _today,
+      );
+      if (statistic.progress == todo.duration) {
+        _stopTimer();
+      }
+    });
+  }
+
+  _stopTimer() {
+    ongoingId = null;
+    _timer?.cancel();
   }
 
   _checkTheme() async {
