@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_list/utils/extension_string.dart';
 import '../database/database.dart';
 
 class TodoEditController extends GetxController {
@@ -34,20 +33,28 @@ class TodoEditController extends GetxController {
 
   validate() {
     if (formKey.currentState!.validate()) {
-      var currentTime = DateTime.now();
+      final title = titleController.text;
+      final body = bodyController.text;
+      final currentTime = DateTime.now();
+      final duration = Duration(
+        minutes: int.parse(
+          minutesController.text,
+        ),
+      ).inMilliseconds;
+
       if (_todo != null) {
         _database.updateTodoById(
-          titleController.text,
-          bodyController.text,
-          minutesController.text.minutesToMillis,
+          title,
+          body,
+          duration,
           currentTime,
           _todo!.id,
         );
       } else {
         _database.insertTodo(
-          titleController.text,
-          bodyController.text,
-          minutesController.text.minutesToMillis,
+          title,
+          body,
+          duration,
           currentTime,
           currentTime,
         );
