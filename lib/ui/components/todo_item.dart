@@ -33,7 +33,7 @@ class TodoItem extends StatelessWidget {
               VerticalDivider(
                 indent: 5,
                 endIndent: 5,
-                thickness: 1,
+                thickness: 3,
                 color: todoWithStatis.getStatus.color,
               ),
               Expanded(
