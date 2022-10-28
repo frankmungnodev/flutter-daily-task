@@ -25,10 +25,10 @@ class HomeScreenController extends GetxController {
 
   @override
   onInit() {
+    _checkTheme();
     var now = DateTime.now();
     _today = DateTime(now.year, now.month, now.day);
     listenStatisDataChanges(date: _today);
-    _checkTheme();
     super.onInit();
   }
 
