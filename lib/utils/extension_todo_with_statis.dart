@@ -8,7 +8,9 @@ extension TodoWithStatisExtension on TodosWithStatisticResult {
   }
 
   int get progressInMinutes {
-    return _convertMilliSecondsToMinutes(milliSec: statistic?.progress ?? 0);
+    return todo.duration < (statistic?.progress ?? 0)
+        ? _convertMilliSecondsToMinutes(milliSec: todo.duration)
+        : _convertMilliSecondsToMinutes(milliSec: statistic?.progress ?? 0);
   }
 
   Status get getStatus {
@@ -23,7 +25,7 @@ extension TodoWithStatisExtension on TodosWithStatisticResult {
       return Status.done;
     }
 
-    return Status.pending;
+    return Status.done;
   }
 
   _convertMilliSecondsToMinutes({required int milliSec}) {
