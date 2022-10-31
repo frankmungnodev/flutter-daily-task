@@ -56,7 +56,7 @@ class HomeScreenController extends GetxController {
     required Todo todo,
     int? statisticId,
   }) async {
-    if (ongoingId == statisticId) {
+    if (ongoingId != null && ongoingId == statisticId) {
       Get.snackbar("Can't delete", 'Stop ${todo.title} to delete!');
     } else {
       Get.defaultDialog(
