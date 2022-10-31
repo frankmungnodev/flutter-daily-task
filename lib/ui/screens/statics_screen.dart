@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:todo_list/controllers/statistic_screen_controller.dart';
 
 class StaticsScreen extends StatelessWidget {
-  const StaticsScreen({Key? key}) : super(key: key);
+  StaticsScreen({Key? key}) : super(key: key);
+
+  final _controller = Get.put(StatisticScreenController());
 
   @override
   Widget build(BuildContext context) {

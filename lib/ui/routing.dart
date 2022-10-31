@@ -23,7 +23,7 @@ class MRouting {
     ),
     GetPage(
       name: statics,
-      page: () => const StaticsScreen(),
+      page: () => StaticsScreen(),
     ),
     GetPage(
       name: settings,
