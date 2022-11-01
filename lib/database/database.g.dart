@@ -13,8 +13,8 @@ class Todo extends DataClass implements Insertable<Todo> {
   final String? body;
   final int duration;
   final int priority;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final String createdAt;
+  final String updatedAt;
   const Todo(
       {required this.id,
       required this.title,
@@ -33,8 +33,8 @@ class Todo extends DataClass implements Insertable<Todo> {
     }
     map['duration'] = Variable<int>(duration);
     map['priority'] = Variable<int>(priority);
-    map['created_at'] = Variable<DateTime>(createdAt);
-    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['created_at'] = Variable<String>(createdAt);
+    map['updated_at'] = Variable<String>(updatedAt);
     return map;
   }
 
@@ -59,8 +59,8 @@ class Todo extends DataClass implements Insertable<Todo> {
       body: serializer.fromJson<String?>(json['body']),
       duration: serializer.fromJson<int>(json['duration']),
       priority: serializer.fromJson<int>(json['priority']),
-      createdAt: serializer.fromJson<DateTime>(json['created_at']),
-      updatedAt: serializer.fromJson<DateTime>(json['updated_at']),
+      createdAt: serializer.fromJson<String>(json['created_at']),
+      updatedAt: serializer.fromJson<String>(json['updated_at']),
     );
   }
   @override
@@ -72,8 +72,8 @@ class Todo extends DataClass implements Insertable<Todo> {
       'body': serializer.toJson<String?>(body),
       'duration': serializer.toJson<int>(duration),
       'priority': serializer.toJson<int>(priority),
-      'created_at': serializer.toJson<DateTime>(createdAt),
-      'updated_at': serializer.toJson<DateTime>(updatedAt),
+      'created_at': serializer.toJson<String>(createdAt),
+      'updated_at': serializer.toJson<String>(updatedAt),
     };
   }
 
@@ -83,8 +83,8 @@ class Todo extends DataClass implements Insertable<Todo> {
           Value<String?> body = const Value.absent(),
           int? duration,
           int? priority,
-          DateTime? createdAt,
-          DateTime? updatedAt}) =>
+          String? createdAt,
+          String? updatedAt}) =>
       Todo(
         id: id ?? this.id,
         title: title ?? this.title,
@@ -130,8 +130,8 @@ class TodosCompanion extends UpdateCompanion<Todo> {
   final Value<String?> body;
   final Value<int> duration;
   final Value<int> priority;
-  final Value<DateTime> createdAt;
-  final Value<DateTime> updatedAt;
+  final Value<String> createdAt;
+  final Value<String> updatedAt;
   const TodosCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
@@ -147,8 +147,8 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     this.body = const Value.absent(),
     required int duration,
     required int priority,
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    required String createdAt,
+    required String updatedAt,
   })  : title = Value(title),
         duration = Value(duration),
         priority = Value(priority),
@@ -160,8 +160,8 @@ class TodosCompanion extends UpdateCompanion<Todo> {
     Expression<String>? body,
     Expression<int>? duration,
     Expression<int>? priority,
-    Expression<DateTime>? createdAt,
-    Expression<DateTime>? updatedAt,
+    Expression<String>? createdAt,
+    Expression<String>? updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -180,8 +180,8 @@ class TodosCompanion extends UpdateCompanion<Todo> {
       Value<String?>? body,
       Value<int>? duration,
       Value<int>? priority,
-      Value<DateTime>? createdAt,
-      Value<DateTime>? updatedAt}) {
+      Value<String>? createdAt,
+      Value<String>? updatedAt}) {
     return TodosCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -212,10 +212,10 @@ class TodosCompanion extends UpdateCompanion<Todo> {
       map['priority'] = Variable<int>(priority.value);
     }
     if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
+      map['created_at'] = Variable<String>(createdAt.value);
     }
     if (updatedAt.present) {
-      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+      map['updated_at'] = Variable<String>(updatedAt.value);
     }
     return map;
   }
@@ -271,15 +271,15 @@ class Todos extends Table with TableInfo<Todos, Todo> {
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
       'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime,
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
-  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
       'updated_at', aliasedName, false,
-      type: DriftSqlType.dateTime,
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   @override
@@ -351,9 +351,9 @@ class Todos extends Table with TableInfo<Todos, Todo> {
       priority: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}priority'])!,
       createdAt: attachedDatabase.options.types
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}created_at'])!,
       updatedAt: attachedDatabase.options.types
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}updated_at'])!,
     );
   }
 
@@ -370,7 +370,7 @@ class Statistic extends DataClass implements Insertable<Statistic> {
   final int id;
   final int? todoId;
   final int progress;
-  final DateTime createdAt;
+  final String createdAt;
   const Statistic(
       {required this.id,
       this.todoId,
@@ -384,7 +384,7 @@ class Statistic extends DataClass implements Insertable<Statistic> {
       map['todo_id'] = Variable<int>(todoId);
     }
     map['progress'] = Variable<int>(progress);
-    map['created_at'] = Variable<DateTime>(createdAt);
+    map['created_at'] = Variable<String>(createdAt);
     return map;
   }
 
@@ -405,7 +405,7 @@ class Statistic extends DataClass implements Insertable<Statistic> {
       id: serializer.fromJson<int>(json['id']),
       todoId: serializer.fromJson<int?>(json['todo_id']),
       progress: serializer.fromJson<int>(json['progress']),
-      createdAt: serializer.fromJson<DateTime>(json['created_at']),
+      createdAt: serializer.fromJson<String>(json['created_at']),
     );
   }
   @override
@@ -415,7 +415,7 @@ class Statistic extends DataClass implements Insertable<Statistic> {
       'id': serializer.toJson<int>(id),
       'todo_id': serializer.toJson<int?>(todoId),
       'progress': serializer.toJson<int>(progress),
-      'created_at': serializer.toJson<DateTime>(createdAt),
+      'created_at': serializer.toJson<String>(createdAt),
     };
   }
 
@@ -423,7 +423,7 @@ class Statistic extends DataClass implements Insertable<Statistic> {
           {int? id,
           Value<int?> todoId = const Value.absent(),
           int? progress,
-          DateTime? createdAt}) =>
+          String? createdAt}) =>
       Statistic(
         id: id ?? this.id,
         todoId: todoId.present ? todoId.value : this.todoId,
@@ -457,7 +457,7 @@ class StatisticsCompanion extends UpdateCompanion<Statistic> {
   final Value<int> id;
   final Value<int?> todoId;
   final Value<int> progress;
-  final Value<DateTime> createdAt;
+  final Value<String> createdAt;
   const StatisticsCompanion({
     this.id = const Value.absent(),
     this.todoId = const Value.absent(),
@@ -468,13 +468,13 @@ class StatisticsCompanion extends UpdateCompanion<Statistic> {
     this.id = const Value.absent(),
     this.todoId = const Value.absent(),
     this.progress = const Value.absent(),
-    required DateTime createdAt,
+    required String createdAt,
   }) : createdAt = Value(createdAt);
   static Insertable<Statistic> custom({
     Expression<int>? id,
     Expression<int>? todoId,
     Expression<int>? progress,
-    Expression<DateTime>? createdAt,
+    Expression<String>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -488,7 +488,7 @@ class StatisticsCompanion extends UpdateCompanion<Statistic> {
       {Value<int>? id,
       Value<int?>? todoId,
       Value<int>? progress,
-      Value<DateTime>? createdAt}) {
+      Value<String>? createdAt}) {
     return StatisticsCompanion(
       id: id ?? this.id,
       todoId: todoId ?? this.todoId,
@@ -510,7 +510,7 @@ class StatisticsCompanion extends UpdateCompanion<Statistic> {
       map['progress'] = Variable<int>(progress.value);
     }
     if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
+      map['created_at'] = Variable<String>(createdAt.value);
     }
     return map;
   }
@@ -552,9 +552,9 @@ class Statistics extends Table with TableInfo<Statistics, Statistic> {
       $customConstraints: 'NOT NULL DEFAULT 0',
       defaultValue: const CustomExpression<int>('0'));
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
       'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime,
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'NOT NULL');
   @override
@@ -601,7 +601,7 @@ class Statistics extends Table with TableInfo<Statistics, Statistic> {
       progress: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}progress'])!,
       createdAt: attachedDatabase.options.types
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}created_at'])!,
     );
   }
 
@@ -618,21 +618,21 @@ abstract class _$MDatabase extends GeneratedDatabase {
   _$MDatabase(QueryExecutor e) : super(e);
   late final Todos todos = Todos(this);
   late final Statistics statistics = Statistics(this);
-  Future<int> insertStatistic(int? var1, DateTime var2) {
+  Future<int> insertStatistic(int? var1, String var2) {
     return customInsert(
       'INSERT INTO statistics (todo_id, created_at) VALUES (?1, ?2)',
-      variables: [Variable<int>(var1), Variable<DateTime>(var2)],
+      variables: [Variable<int>(var1), Variable<String>(var2)],
       updates: {statistics},
     );
   }
 
-  Future<int> updateStatistic(int var1, int var2, DateTime var3) {
+  Future<int> updateStatistic(int var1, int var2, String var3) {
     return customUpdate(
       'UPDATE statistics SET progress = ?1 WHERE id = ?2 AND created_at = ?3',
       variables: [
         Variable<int>(var1),
         Variable<int>(var2),
-        Variable<DateTime>(var3)
+        Variable<String>(var3)
       ],
       updates: {statistics},
       updateKind: UpdateKind.update,
@@ -648,32 +648,32 @@ abstract class _$MDatabase extends GeneratedDatabase {
     );
   }
 
-  Selectable<Statistic> getStatisticById(int var1, DateTime var2) {
+  Selectable<Statistic> getStatisticById(int var1, String var2) {
     return customSelect(
         'SELECT * FROM statistics WHERE id = ?1 AND created_at = ?2',
         variables: [
           Variable<int>(var1),
-          Variable<DateTime>(var2)
+          Variable<String>(var2)
         ],
         readsFrom: {
           statistics,
         }).asyncMap(statistics.mapFromRow);
   }
 
-  Selectable<Statistic> getStatisticByTodoId(int? var1, DateTime var2) {
+  Selectable<Statistic> getStatisticByTodoId(int? var1, String var2) {
     return customSelect(
         'SELECT * FROM statistics WHERE todo_id = ?1 AND created_at = ?2',
         variables: [
           Variable<int>(var1),
-          Variable<DateTime>(var2)
+          Variable<String>(var2)
         ],
         readsFrom: {
           statistics,
         }).asyncMap(statistics.mapFromRow);
   }
 
-  Future<int> insertTodo(String var1, String? var2, int var3, int var4,
-      DateTime var5, DateTime var6) {
+  Future<int> insertTodo(
+      String var1, String? var2, int var3, int var4, String var5, String var6) {
     return customInsert(
       'INSERT INTO todos (title, body, duration, priority, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6)',
       variables: [
@@ -681,8 +681,8 @@ abstract class _$MDatabase extends GeneratedDatabase {
         Variable<String>(var2),
         Variable<int>(var3),
         Variable<int>(var4),
-        Variable<DateTime>(var5),
-        Variable<DateTime>(var6)
+        Variable<String>(var5),
+        Variable<String>(var6)
       ],
       updates: {todos},
     );
@@ -705,7 +705,7 @@ abstract class _$MDatabase extends GeneratedDatabase {
   }
 
   Future<int> updateTodoById(
-      String var1, String? var2, int var3, int var4, DateTime var5, int var6) {
+      String var1, String? var2, int var3, int var4, String var5, int var6) {
     return customUpdate(
       'UPDATE todos SET title = ?1, body = ?2, duration = ?3, priority = ?4, updated_at = ?5 WHERE id = ?6',
       variables: [
@@ -713,7 +713,7 @@ abstract class _$MDatabase extends GeneratedDatabase {
         Variable<String>(var2),
         Variable<int>(var3),
         Variable<int>(var4),
-        Variable<DateTime>(var5),
+        Variable<String>(var5),
         Variable<int>(var6)
       ],
       updates: {todos},
@@ -730,12 +730,10 @@ abstract class _$MDatabase extends GeneratedDatabase {
     );
   }
 
-  Selectable<TodosWithStatisticResult> todosWithStatistic(DateTime? var1) {
+  Selectable<TodosWithStatisticResult> todosWithStatistic() {
     return customSelect(
-        'SELECT"t"."id" AS "nested_0.id", "t"."title" AS "nested_0.title", "t"."body" AS "nested_0.body", "t"."duration" AS "nested_0.duration", "t"."priority" AS "nested_0.priority", "t"."created_at" AS "nested_0.created_at", "t"."updated_at" AS "nested_0.updated_at","s"."id" AS "nested_1.id", "s"."todo_id" AS "nested_1.todo_id", "s"."progress" AS "nested_1.progress", "s"."created_at" AS "nested_1.created_at" FROM todos AS t LEFT JOIN statistics AS s ON t.id = s.todo_id AND s.created_at = ?1 ORDER BY t.priority DESC',
-        variables: [
-          Variable<DateTime>(var1)
-        ],
+        'SELECT"t"."id" AS "nested_0.id", "t"."title" AS "nested_0.title", "t"."body" AS "nested_0.body", "t"."duration" AS "nested_0.duration", "t"."priority" AS "nested_0.priority", "t"."created_at" AS "nested_0.created_at", "t"."updated_at" AS "nested_0.updated_at","s"."id" AS "nested_1.id", "s"."todo_id" AS "nested_1.todo_id", "s"."progress" AS "nested_1.progress", "s"."created_at" AS "nested_1.created_at" FROM todos AS t LEFT OUTER JOIN statistics AS s ON t.id = s.todo_id AND date(s.created_at) = date(\'now\') WHERE unixepoch(t.created_at) <= unixepoch(\'now\', \'localtime\') ORDER BY t.priority DESC',
+        variables: [],
         readsFrom: {
           todos,
           statistics,
@@ -744,6 +742,20 @@ abstract class _$MDatabase extends GeneratedDatabase {
         todo: await todos.mapFromRow(row, tablePrefix: 'nested_0'),
         statistic:
             await statistics.mapFromRowOrNull(row, tablePrefix: 'nested_1'),
+      );
+    });
+  }
+
+  Selectable<GetDatesResult> getDates() {
+    return customSelect(
+        'SELECT unixepoch(created_at) AS _c0, unixepoch(\'now\', \'localtime\') AS _c1 FROM todos',
+        variables: [],
+        readsFrom: {
+          todos,
+        }).map((QueryRow row) {
+      return GetDatesResult(
+        unixepochcreatedAt: row.readNullable<DateTime>('_c0'),
+        unixepochnowlocaltime: row.readNullable<DateTime>('_c1'),
       );
     });
   }
@@ -761,5 +773,14 @@ class TodosWithStatisticResult {
   TodosWithStatisticResult({
     required this.todo,
     this.statistic,
+  });
+}
+
+class GetDatesResult {
+  final DateTime? unixepochcreatedAt;
+  final DateTime? unixepochnowlocaltime;
+  GetDatesResult({
+    this.unixepochcreatedAt,
+    this.unixepochnowlocaltime,
   });
 }

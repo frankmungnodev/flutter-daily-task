@@ -19,16 +19,15 @@ class HomeScreenController extends GetxController {
   final _expandedTodo = RxnInt(null);
   get expandedTodo => _expandedTodo;
 
-  late final DateTime _today;
+  late final String _today;
 
   var homeList = <TodosWithStatisticResult>[].obs;
 
   @override
   onInit() {
     _checkTheme();
-    var now = DateTime.now();
-    _today = DateTime(now.year, now.month, now.day);
-    listenStatisDataChanges(date: _today);
+    _today = Constants.formatter.format(DateTime.now());
+    listenStatisDataChanges(dateString: _today);
     super.onInit();
   }
 
@@ -76,11 +75,18 @@ class HomeScreenController extends GetxController {
     }
   }
 
-  listenStatisDataChanges({required DateTime date}) async {
-    _database.todosWithStatistic(date).watch().listen((list) {
+  listenStatisDataChanges({required String dateString}) async {
+    _database.todosWithStatistic().watch().listen((list) {
       debugPrint('Todo changes total: ${list.length}');
       homeList.clear();
       homeList.addAll(list);
+    });
+
+    _database.getDates().watch().listen((event) {
+      event.forEach((element) {
+        debugPrint(
+            'Created at: ${element.unixepochcreatedAt}, datetime: ${element.unixepochnowlocaltime}');
+      });
     });
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_list/utils/constants.dart';
 import 'package:todo_list/utils/extensions.dart';
 import '../database/database.dart';
 import '../utils/priority.dart';
@@ -44,11 +45,9 @@ class TodoEditController extends GetxController {
     if (formKey.currentState!.validate()) {
       final title = titleController.text;
       final body = bodyController.text;
-      final currentTime = DateTime.now();
+      final currentTime = Constants.formatter.format(DateTime.now());
       final duration = Duration(
-        minutes: int.parse(
-          durationController.text,
-        ),
+        minutes: int.parse(durationController.text),
       ).inMilliseconds;
 
       if (_todo != null) {

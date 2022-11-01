@@ -6,8 +6,8 @@ CREATE TABLE todos(
     body TEXT,
     duration INT NOT NULL,
     priority INT NOT NULL,
-    created_at DATETIME NOT NULL,
-    updated_at DATETIME NOT NULL,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
 );
 
 insertTodo: INSERT INTO todos (title, body, duration, priority, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?);
@@ -16,4 +16,12 @@ getTodoById: SELECT * FROM todos WHERE id = ?;
 updateTodoById: UPDATE todos SET title = ?, body = ?, duration = ?, priority = ?, updated_at = ? WHERE id = ?;
 deleteTodoById: DELETE FROM todos WHERE id = ?;
 
-todosWithStatistic: SELECT t.** AS "todo", s.** AS "statistic" FROM todos t LEFT JOIN statistics s ON t.id = s.todo_id AND s.created_at = ? ORDER BY t.priority DESC;
+todosWithStatistic: 
+SELECT t.** AS "todo", s.** AS "statistic" 
+FROM todos t 
+LEFT OUTER JOIN statistics s 
+ON t.id = s.todo_id AND date(s.created_at) = date('now')
+WHERE unixepoch(t.created_at) <= unixepoch('now', 'localtime')
+ORDER BY t.priority DESC;
+
+getDates: SELECT unixepoch(created_at), unixepoch('now', 'localtime') FROM todos;

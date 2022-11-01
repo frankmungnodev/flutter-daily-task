@@ -4,7 +4,7 @@ CREATE TABLE statistics(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     todo_id INTEGER REFERENCES todos(id),
     progress INT NOT NULL DEFAULT 0,
-    created_at DATETIME NOT NULL,
+    created_at TEXT NOT NULL,
 );
 
 insertStatistic: INSERT INTO statistics (todo_id, created_at) VALUES (?, ?);
