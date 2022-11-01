@@ -1,16 +1,9 @@
-# flutter_application_1
+# Daily Task Manager
 
-A new Flutter project.
+This project is a simple todo/task app and my first flutter project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+In this app,
+1. You can create task with title, body, minutes, priority etc.
+2. Progress are reset for every day, so you can track your activity.
+3. Statistic page currently showing complete rate by priority only.
+4. Toggle dark/light theme.
