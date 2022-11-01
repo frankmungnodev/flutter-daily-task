@@ -797,7 +797,7 @@ abstract class _$MDatabase extends GeneratedDatabase {
     });
   }
 
-  Selectable<GetChartByPriorityResult> getChartByPriority() {
+  Selectable<GetCompleteRateByPriorityResult> getCompleteRateByPriority() {
     return customSelect(
         'SELECT SUM(CASE WHEN priority = 1 THEN s.progress ELSE 0 END) AS low, SUM(CASE WHEN priority = 2 THEN s.progress ELSE 0 END) AS medium, SUM(CASE WHEN priority = 3 THEN s.progress ELSE 0 END) AS high FROM todos AS t INNER JOIN statistics AS s ON t.id = s.todo_id',
         variables: [],
@@ -805,7 +805,7 @@ abstract class _$MDatabase extends GeneratedDatabase {
           todos,
           statistics,
         }).map((QueryRow row) {
-      return GetChartByPriorityResult(
+      return GetCompleteRateByPriorityResult(
         low: row.read<int>('low'),
         medium: row.read<int>('medium'),
         high: row.read<int>('high'),
@@ -829,11 +829,11 @@ class TodosWithStatisticResult {
   });
 }
 
-class GetChartByPriorityResult {
+class GetCompleteRateByPriorityResult {
   final int low;
   final int medium;
   final int high;
-  GetChartByPriorityResult({
+  GetCompleteRateByPriorityResult({
     required this.low,
     required this.medium,
     required this.high,

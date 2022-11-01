@@ -10,6 +10,9 @@ class StatisticScreenController extends GetxController {
   final _sectionData = <PieChartSectionData>[];
   get sectionData => _sectionData.obs;
 
+  final _showCompleteRateByPriority = false.obs;
+  get showCompleteRateByPriority => _showCompleteRateByPriority;
+
   @override
   void onInit() {
     super.onInit();
@@ -17,7 +20,9 @@ class StatisticScreenController extends GetxController {
   }
 
   _listenStatisticChanged() async {
-    _database.getChartByPriority().watchSingle().listen((priorities) {
+    _database.getCompleteRateByPriority().watchSingle().listen((priorities) {
+      _showCompleteRateByPriority.value = true;
+
       final total = priorities.low + priorities.medium + priorities.high;
       _sectionData.clear();
       _sectionData.add(_getSectionData(
@@ -35,6 +40,9 @@ class StatisticScreenController extends GetxController {
         total: total,
         color: Priority.high.color,
       ));
+    }).onError((e) {
+      _showCompleteRateByPriority.value = false;
+      debugPrint('Error listen chart by priority');
     });
   }
 
