@@ -81,13 +81,6 @@ class HomeScreenController extends GetxController {
       homeList.clear();
       homeList.addAll(list);
     });
-
-    _database.getDates().watch().listen((event) {
-      event.forEach((element) {
-        debugPrint(
-            'Created at: ${element.unixepochcreatedAt}, datetime: ${element.unixepochnowlocaltime}');
-      });
-    });
   }
 
   _alertOngoingExists({
@@ -116,6 +109,7 @@ class HomeScreenController extends GetxController {
     if (statistic == null) {
       final insertId = await _database.insertStatistic(
         todo.id,
+        todo.duration,
         _today,
       );
       debugPrint(
@@ -123,22 +117,22 @@ class HomeScreenController extends GetxController {
       );
 
       final inserted =
-          await _database.getStatisticById(insertId, _today).getSingleOrNull();
+          await _database.getStatisticById(insertId).getSingleOrNull();
       if (inserted != null) {
-        _startCountDown(inserted, todo);
+        _startCountDown(inserted);
       }
     } else {
       debugPrint('Update statistic');
       switch (todosWithStatistic.getStatus) {
         case Status.pending:
-          debugPrint('update statistic handle countdown: pending');
+          _startCountDown(statistic);
           break;
         case Status.ongoing:
-          _database.updateStatistic(statistic.progress, statistic.id, _today);
+          _database.updateStatistic(statistic.progress, statistic.id);
           _stopTimer();
           break;
         case Status.pause:
-          _startCountDown(statistic, todo);
+          _startCountDown(statistic);
           break;
         case Status.done:
           debugPrint('update statistic handle countdown: done');
@@ -147,22 +141,23 @@ class HomeScreenController extends GetxController {
     }
   }
 
-  _startCountDown(Statistic statistic, Todo todo) async {
+  _startCountDown(Statistic statistic) async {
     final progressInSeconds =
         Duration(milliseconds: statistic.progress).inSeconds;
 
     ongoingId = statistic.id;
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
-      var currentProgressSec = timer.tick + progressInSeconds;
+      final currentProgressSec = timer.tick + progressInSeconds;
+      var progressMillis = Duration(seconds: currentProgressSec).inMilliseconds;
       debugPrint('Update progress of $ongoingId: $currentProgressSec');
 
-      _database.updateStatistic(
-        Duration(seconds: currentProgressSec).inMilliseconds,
+      await _database.updateStatistic(
+        progressMillis,
         ongoingId!,
-        _today,
       );
-      if (statistic.progress == todo.duration) {
+
+      if (progressMillis == statistic.total) {
         _stopTimer();
       }
     });

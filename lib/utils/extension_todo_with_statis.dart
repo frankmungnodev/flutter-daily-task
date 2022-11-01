@@ -5,8 +5,10 @@ import 'package:todo_list/utils/extensions.dart';
 import 'package:todo_list/utils/status.dart';
 
 extension TodoWithStatisExtension on TodosWithStatisticResult {
-  int get durationInMinutes {
-    return _convertMilliSecondsToMinutes(milliSec: todo.duration);
+  int get totalInMinutes {
+    return _convertMilliSecondsToMinutes(
+      milliSec: statistic?.total ?? todo.duration,
+    );
   }
 
   int get progressInMinutes {
@@ -16,7 +18,7 @@ extension TodoWithStatisExtension on TodosWithStatisticResult {
   }
 
   double get progressPercent {
-    return (statistic?.progress ?? 0) / todo.duration;
+    return (statistic?.progress ?? 0) / (statistic?.total ?? todo.duration);
   }
 
   IconData get icon {
@@ -37,7 +39,7 @@ extension TodoWithStatisExtension on TodosWithStatisticResult {
   }
 
   Status get getStatus {
-    var total = todo.duration;
+    var total = statistic?.total ?? todo.duration;
     var progress = statistic?.progress ?? 0;
 
     if (progress <= 0) {

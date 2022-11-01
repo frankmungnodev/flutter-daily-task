@@ -41,7 +41,7 @@ class TodoEditController extends GetxController {
     _priority.value = priority;
   }
 
-  validate() {
+  validate() async {
     if (formKey.currentState!.validate()) {
       final title = titleController.text;
       final body = bodyController.text;
@@ -51,7 +51,22 @@ class TodoEditController extends GetxController {
       ).inMilliseconds;
 
       if (_todo != null) {
-        _database.updateTodoById(
+        final todayStatistic =
+            await _database.getStatisticToday(_todo!.id).getSingleOrNull();
+
+        if (todayStatistic == null) {
+          await _database.insertStatistic(
+            _todo!.id,
+            duration,
+            Constants.formatter.format(
+              DateTime.now(),
+            ),
+          );
+        } else {
+          await _database.updateStatisticTotal(duration, todayStatistic.id);
+        }
+
+        await _database.updateTodoById(
           title,
           body,
           duration,
@@ -60,7 +75,7 @@ class TodoEditController extends GetxController {
           _todo!.id,
         );
       } else {
-        _database.insertTodo(
+        await _database.insertTodo(
           title,
           body,
           duration,

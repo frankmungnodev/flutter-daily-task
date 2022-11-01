@@ -84,7 +84,7 @@ class TodoCollapsed extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
-                '${todoWithStatis.progressInMinutes}/${todoWithStatis.durationInMinutes} Minutes',
+                '${todoWithStatis.progressInMinutes}/${todoWithStatis.totalInMinutes} Minutes',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],
