@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 32),
                     child: Text(
-                      'Daily Tasks',
+                      'Today Tasks',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),

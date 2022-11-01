@@ -797,6 +797,22 @@ abstract class _$MDatabase extends GeneratedDatabase {
     });
   }
 
+  Selectable<GetChartByPriorityResult> getChartByPriority() {
+    return customSelect(
+        'SELECT SUM(CASE WHEN priority = 1 THEN s.progress ELSE 0 END) AS low, SUM(CASE WHEN priority = 2 THEN s.progress ELSE 0 END) AS medium, SUM(CASE WHEN priority = 3 THEN s.progress ELSE 0 END) AS high FROM todos AS t INNER JOIN statistics AS s ON t.id = s.todo_id',
+        variables: [],
+        readsFrom: {
+          todos,
+          statistics,
+        }).map((QueryRow row) {
+      return GetChartByPriorityResult(
+        low: row.read<int>('low'),
+        medium: row.read<int>('medium'),
+        high: row.read<int>('high'),
+      );
+    });
+  }
+
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -810,5 +826,16 @@ class TodosWithStatisticResult {
   TodosWithStatisticResult({
     required this.todo,
     this.statistic,
+  });
+}
+
+class GetChartByPriorityResult {
+  final int low;
+  final int medium;
+  final int high;
+  GetChartByPriorityResult({
+    required this.low,
+    required this.medium,
+    required this.high,
   });
 }

@@ -23,3 +23,12 @@ LEFT OUTER JOIN statistics s
 ON t.id = s.todo_id AND date(s.created_at) = date('now')
 WHERE unixepoch(t.created_at) <= unixepoch('now', 'localtime')
 ORDER BY t.priority DESC;
+
+getChartByPriority: 
+SELECT 
+SUM(CASE WHEN priority = 1 THEN s.progress ELSE 0 END) AS "low", 
+SUM(CASE WHEN priority = 2 THEN s.progress ELSE 0 END) AS "medium", 
+SUM(CASE WHEN priority = 3 THEN s.progress ELSE 0 END) AS "high" 
+FROM todos t
+INNER JOIN statistics s 
+ON t.id = s.todo_id;
