@@ -56,3 +56,6 @@ In this app,
     <td><img src="screenshots/todo_11.jpg" width=250 height=480></td>
   </tr>
  </table>
+
+ # Getting started
+ 1. Clone the project
