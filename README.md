@@ -18,9 +18,9 @@ In this app,
      <td>Statistic Page</td>
   </tr>
   <tr>
-    <td><img src="screenshots/todo_1.jpg" width=270 height=480></td>
-    <td><img src="screenshots/todo_2.jpg" width=270 height=480></td>
-    <td><img src="screenshots/todo_3.jpg" width=270 height=480></td>
+    <td><img src="screenshots/todo_1.jpg" width=250 height=480></td>
+    <td><img src="screenshots/todo_2.jpg" width=250 height=480></td>
+    <td><img src="screenshots/todo_3.jpg" width=250 height=480></td>
   </tr>
   <tr>
     <td>Settings Page</td>
@@ -28,9 +28,9 @@ In this app,
      <td>Create Todo</td>
   </tr>
   <tr>
-    <td><img src="screenshots/todo_4.jpg" width=270 height=480></td>
-    <td><img src="screenshots/todo_5.jpg" width=270 height=480></td>
-    <td><img src="screenshots/todo_6.jpg" width=270 height=480></td>
+    <td><img src="screenshots/todo_4.jpg" width=250 height=480></td>
+    <td><img src="screenshots/todo_5.jpg" width=250 height=480></td>
+    <td><img src="screenshots/todo_6.jpg" width=250 height=480></td>
   </tr>
  </table>
 
@@ -42,16 +42,16 @@ In this app,
      <td>Settings Page</td>
   </tr>
   <tr>
-    <td><img src="screenshots/todo_7.jpg" width=270 height=480></td>
-    <td><img src="screenshots/todo_8.jpg" width=270 height=480></td>
-    <td><img src="screenshots/todo_9.jpg" width=270 height=480></td>
+    <td><img src="screenshots/todo_7.jpg" width=250 height=480></td>
+    <td><img src="screenshots/todo_8.jpg" width=250 height=480></td>
+    <td><img src="screenshots/todo_9.jpg" width=250 height=480></td>
   </tr>
   <tr>
     <td>Edit Todo</td>
      <td>Create Todo</td>
   </tr>
   <tr>
-    <td><img src="screenshots/todo_10.jpg" width=270 height=480></td>
-    <td><img src="screenshots/todo_11.jpg" width=270 height=480></td>
+    <td><img src="screenshots/todo_10.jpg" width=250 height=480></td>
+    <td><img src="screenshots/todo_11.jpg" width=250 height=480></td>
   </tr>
  </table>
