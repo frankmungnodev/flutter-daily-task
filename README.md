@@ -1,6 +1,7 @@
 # Daily Task Manager
 
-This project is a simple todo/task app and my first flutter project.
+This project is a simple todo/task app and my first flutter app.
+
 
 In this app,
 1. You can create task with title, body, minutes, priority etc.
@@ -34,7 +35,7 @@ In this app,
   </tr>
  </table>
 
-##### Light Theme:
+##### Light Theme
 <table>
   <tr>
     <td>Home Page</td>
