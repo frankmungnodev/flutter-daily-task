@@ -126,44 +126,45 @@ class TodoExpanded extends StatelessWidget {
     final todo = todoWithStatis.todo;
     final expandedTodo = _controller.expandedTodo;
 
-    return Obx(
-      (() => (expandedTodo != null && expandedTodo == todo.id)
-          ? Column(
-              children: [
-                todo.body != null && todo.body!.isNotEmpty
-                    ? Container(
-                        width: double.maxFinite,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        child: Text(
-                          todo.body!,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      )
-                    : const Center(),
-                Row(
-                  children: [
-                    TextButton(
-                      onPressed: () => Get.toNamed(
-                        MRouting.todoEdit,
-                        arguments: todo.id,
-                      ),
-                      child: const Text('Edit'),
+    return Obx(() {
+      if (expandedTodo != null && expandedTodo == todo.id) {
+        return Column(
+          children: [
+            todo.body != null && todo.body!.isNotEmpty
+                ? Container(
+                    width: double.maxFinite,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
                     ),
-                    TextButton(
-                      onPressed: () => _controller.deleteTodo(
-                        todo: todo,
-                        statisticId: todoWithStatis.statistic?.id,
-                      ),
-                      child: const Text('Delete'),
-                    )
-                  ],
+                    child: Text(
+                      todo.body!,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  )
+                : const Center(),
+            Row(
+              children: [
+                TextButton(
+                  onPressed: () => Get.toNamed(
+                    MRouting.todoEdit,
+                    arguments: todo.id,
+                  ),
+                  child: const Text('Edit'),
                 ),
+                TextButton(
+                  onPressed: () => _controller.deleteTodo(
+                    todo: todo,
+                    statisticId: todoWithStatis.statistic?.id,
+                  ),
+                  child: const Text('Delete'),
+                )
               ],
-            )
-          : const Center()),
-    );
+            ),
+          ],
+        );
+      }
+      return const SizedBox();
+    });
   }
 }
