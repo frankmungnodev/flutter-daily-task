@@ -7,11 +7,14 @@ import 'package:todo_list/utils/priority.dart';
 class StatisticScreenController extends GetxController {
   final _database = Get.find<MDatabase>();
 
+  final _completeRate = "0%".obs;
+  get completeRate => _completeRate;
+
   final _sectionData = <PieChartSectionData>[].obs;
   get sectionData => _sectionData;
 
-  final _showCompleteRateByPriority = false.obs;
-  get showCompleteRateByPriority => _showCompleteRateByPriority;
+  final _showTotalProgressByPriority = false.obs;
+  get showTotalProgressByPriority => _showTotalProgressByPriority;
 
   @override
   void onInit() {
@@ -20,41 +23,31 @@ class StatisticScreenController extends GetxController {
   }
 
   _listenStatisticChanged() async {
-    _database.getCompleteRateByPriority().watchSingle().listen((priorities) {
-      _showCompleteRateByPriority.value = true;
+    _database.getTotalProgressByPriority().watchSingle().listen((priorities) {
+      _showTotalProgressByPriority.value = true;
 
-      final total = priorities.low + priorities.medium + priorities.high;
       _sectionData.clear();
-      _sectionData.add(_getSectionData(
-        priorities.low,
-        total: total,
-        color: Priority.low.color,
-      ));
-      _sectionData.add(_getSectionData(
-        priorities.medium,
-        total: total,
-        color: Priority.medium.color,
-      ));
-      _sectionData.add(_getSectionData(
-        priorities.high,
-        total: total,
-        color: Priority.high.color,
-      ));
+      _sectionData.addAll(
+        Priority.values.map(
+          (priority) {
+            final value = (priority == Priority.low
+                    ? priorities.low
+                    : priority == Priority.medium
+                        ? priorities.medium
+                        : priorities.high)
+                .toDouble();
+
+            return PieChartSectionData(
+              value: value,
+              color: priority.color,
+              title: "${Duration(milliseconds: value.toInt()).inMinutes} Min",
+            );
+          },
+        ),
+      );
     }).onError((e) {
-      _showCompleteRateByPriority.value = false;
+      _showTotalProgressByPriority.value = false;
       debugPrint('Error listen chart by priority');
     });
-  }
-
-  PieChartSectionData _getSectionData(
-    int value, {
-    required int total,
-    Color? color,
-  }) {
-    return PieChartSectionData(
-      value: value.toDouble(),
-      color: color,
-      title: "${Duration(milliseconds: value).inMinutes} Min",
-    );
   }
 }

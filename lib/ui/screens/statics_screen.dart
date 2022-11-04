@@ -27,16 +27,25 @@ class StaticsScreen extends StatelessWidget {
             ),
           ),
           Obx(() {
-            if (_controller.showCompleteRateByPriority.value) {
+            return Text(
+              'Total completion rate: ${_controller.completeRate}',
+              style: Get.theme.textTheme.titleMedium,
+            );
+          }),
+          const SizedBox(
+            height: 20,
+          ),
+          Obx(() {
+            if (_controller.showTotalProgressByPriority.value) {
               return Text(
-                'Complete rate by priority:',
-                style: Theme.of(context).textTheme.titleMedium,
+                'Total progress by priority',
+                style: Get.theme.textTheme.titleLarge,
               );
             }
             return const SizedBox();
           }),
           Obx(() {
-            if (_controller.showCompleteRateByPriority.value) {
+            if (_controller.showTotalProgressByPriority.value) {
               return AspectRatio(
                 aspectRatio: 3 / 2,
                 child: Row(
