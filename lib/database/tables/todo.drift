@@ -24,7 +24,7 @@ ON t.id = s.todo_id AND date(s.created_at) = date('now')
 WHERE unixepoch(t.created_at) <= unixepoch('now', 'localtime')
 ORDER BY t.priority DESC;
 
-getCompleteRateByPriority: 
+getTotalProgressByPriority: 
 SELECT 
 SUM(CASE WHEN priority = 1 THEN s.progress ELSE 0 END) AS "low", 
 SUM(CASE WHEN priority = 2 THEN s.progress ELSE 0 END) AS "medium", 
