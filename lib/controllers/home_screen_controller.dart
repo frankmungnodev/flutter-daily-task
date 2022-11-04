@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_list/controllers/notification_controller.dart';
 import 'package:todo_list/utils/extension_todo_with_statis.dart';
 import 'package:todo_list/utils/status.dart';
 
@@ -25,6 +26,7 @@ class HomeScreenController extends GetxController {
 
   @override
   onInit() {
+    NotificationController.startListeningNotificationEvent();
     _checkTheme();
     _today = Constants.formatter.format(DateTime.now());
     listenStatisDataChanges(dateString: _today);
@@ -119,20 +121,20 @@ class HomeScreenController extends GetxController {
       final inserted =
           await _database.getStatisticById(insertId).getSingleOrNull();
       if (inserted != null) {
-        _startCountDown(inserted);
+        _startCountDown(todo.title, statistic: inserted);
       }
     } else {
       debugPrint('Update statistic');
       switch (todosWithStatistic.getStatus) {
         case Status.pending:
-          _startCountDown(statistic);
+          _startCountDown(todo.title, statistic: statistic);
           break;
         case Status.ongoing:
           _database.updateStatistic(statistic.progress, statistic.id);
           _stopTimer();
           break;
         case Status.pause:
-          _startCountDown(statistic);
+          _startCountDown(todo.title, statistic: statistic);
           break;
         case Status.done:
           debugPrint('update statistic handle countdown: done');
@@ -141,7 +143,10 @@ class HomeScreenController extends GetxController {
     }
   }
 
-  _startCountDown(Statistic statistic) async {
+  _startCountDown(
+    String? taskName, {
+    required Statistic statistic,
+  }) async {
     final progressInSeconds =
         Duration(milliseconds: statistic.progress).inSeconds;
 
@@ -158,6 +163,9 @@ class HomeScreenController extends GetxController {
       );
 
       if (progressMillis == statistic.total) {
+        NotificationController.createTaskCompletedNotification(
+          taskName: taskName ?? '',
+        );
         _stopTimer();
       }
     });

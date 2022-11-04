@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/ui/routing.dart';
 import 'package:get/get.dart';
+import 'package:todo_list/controllers/notification_controller.dart';
 
+import 'ui/routing.dart';
 import 'database/database.dart';
 
-void main() {
+void main() async {
+  await NotificationController.initializeLocalNotifications();
   runApp(const App());
 }
 
