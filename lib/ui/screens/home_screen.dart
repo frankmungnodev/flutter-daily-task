@@ -14,60 +14,60 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Obx(
-          (() => ListView(
-                clipBehavior: Clip.none,
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 32),
-                    child: Text(
-                      'Today Tasks',
-                      style: Theme.of(context).textTheme.headlineSmall,
+        child: Obx(() {
+          return ListView(
+            clipBehavior: Clip.none,
+            physics: const BouncingScrollPhysics(),
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 32),
+                child: Text(
+                  'Today Tasks',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(
+                  top: 16,
+                  left: 8,
+                  right: 8,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Priorities',
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 16,
-                      left: 8,
-                      right: 8,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Priorities',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        ...Priority.values.map(
-                          (priority) => Row(
-                            children: [
-                              Container(
-                                width: 15,
-                                height: 15,
-                                margin: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: priority.color,
-                                ),
-                              ),
-                              Text(priority.displayText),
-                            ],
+                    ...Priority.values.map(
+                      (priority) => Row(
+                        children: [
+                          Container(
+                            width: 15,
+                            height: 15,
+                            margin: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: priority.color,
+                            ),
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                  ...controller.homeList.map(
-                    (todo) => TodoItem(
-                      todoWithStatis: todo,
-                    ),
-                  ),
-                ],
-              )),
-        ),
+                          Text(priority.displayText),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              ...controller.homeList.map(
+                (todo) => TodoItem(
+                  todoWithStatis: todo,
+                ),
+              ),
+            ],
+          );
+        }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (() => Get.toNamed(MRouting.todoEdit)),

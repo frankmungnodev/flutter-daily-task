@@ -27,54 +27,56 @@ class StaticsScreen extends StatelessWidget {
             ),
           ),
           Obx(() {
-            return _controller.showCompleteRateByPriority.value
-                ? Text(
-                    'Complete rate by priority:',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  )
-                : const SizedBox();
+            if (_controller.showCompleteRateByPriority.value) {
+              return Text(
+                'Complete rate by priority:',
+                style: Theme.of(context).textTheme.titleMedium,
+              );
+            }
+            return const SizedBox();
           }),
           Obx(() {
-            return _controller.showCompleteRateByPriority.value
-                ? AspectRatio(
-                    aspectRatio: 3 / 2,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        AspectRatio(
-                          aspectRatio: 2 / 2,
-                          child: PieChart(
-                            PieChartData(
-                              pieTouchData: PieTouchData(
-                                touchCallback:
-                                    (FlTouchEvent event, pieTouchResponse) {},
-                              ),
-                              borderData: FlBorderData(
-                                show: false,
-                              ),
-                              sectionsSpace: 0,
-                              centerSpaceRadius: 40,
-                              sections: _controller.sectionData,
-                            ),
+            if (_controller.showCompleteRateByPriority.value) {
+              return AspectRatio(
+                aspectRatio: 3 / 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 2 / 2,
+                      child: PieChart(
+                        PieChartData(
+                          pieTouchData: PieTouchData(
+                            touchCallback:
+                                (FlTouchEvent event, pieTouchResponse) {},
                           ),
+                          borderData: FlBorderData(
+                            show: false,
+                          ),
+                          sectionsSpace: 0,
+                          centerSpaceRadius: 40,
+                          sections: _controller.sectionData,
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ...Priority.values.map(
-                              (e) => Indicator(
-                                color: e.color,
-                                text: e.displayText,
-                                isSquare: true,
-                              ),
-                            )
-                          ],
-                        ),
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ...Priority.values.map(
+                          (e) => Indicator(
+                            color: e.color,
+                            text: e.displayText,
+                            isSquare: true,
+                          ),
+                        )
                       ],
                     ),
-                  )
-                : const SizedBox();
+                  ],
+                ),
+              );
+            }
+            return const SizedBox();
           }),
           const SizedBox(
             height: 12,
