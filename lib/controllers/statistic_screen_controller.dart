@@ -7,8 +7,8 @@ import 'package:todo_list/utils/priority.dart';
 class StatisticScreenController extends GetxController {
   final _database = Get.find<MDatabase>();
 
-  final _sectionData = <PieChartSectionData>[];
-  get sectionData => _sectionData.obs;
+  final _sectionData = <PieChartSectionData>[].obs;
+  get sectionData => _sectionData;
 
   final _showCompleteRateByPriority = false.obs;
   get showCompleteRateByPriority => _showCompleteRateByPriority;
